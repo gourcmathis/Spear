@@ -1,5 +1,5 @@
 public class Cle extends Item {
-    public Cle(int x, int y, String nomFichier) {
-        super(x, y, nomFichier);
+    public Cle(int x, int y, String nomFichier, int pixelImage) {
+        super(x, y, nomFichier,pixelImage);
     }
 }

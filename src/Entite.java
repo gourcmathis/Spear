@@ -1,9 +1,10 @@
 import javafx.geometry.BoundingBox;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public abstract class Entite {
-    private int posX;
-    private int posY;
+    protected int posX;
+    protected int posY;
     private Image image;
     private double hauteur;
     private double largeur;
@@ -11,15 +12,16 @@ public abstract class Entite {
 
 
 
-    public Entite(int x, int y,String nomFichier){
+    public Entite(int x, int y,String nomFichier,int pixelImage){
         posX=x;
         posY=y;
-        setImage(nomFichier);
+        setImage(nomFichier,pixelImage); // pixelImage est la taille que l'on souhaite attribuer à l'entité
         setVisible(true);
     }
 
-    public void setImage(String nomFichier ){
-        image = new Image(nomFichier); // nomFichier est l'url de l'image source
+
+    public void setImage(String nomFichier,int pixelImage ){
+        image = new Image(nomFichier,pixelImage,pixelImage,true,false); // nomFichier est l'url de l'image source, conserve le ratio de l'image
         hauteur = image.getHeight();
         largeur = image.getWidth();
     }
@@ -46,5 +48,10 @@ public abstract class Entite {
     public void setVisible(boolean visible){
         // booleen permettant de savoir s'il faut afficher à l'écran l'entite ou non
         this.visible= visible;
+    }
+    public void render(GraphicsContext gc){
+        if (visible) {
+            gc.drawImage(image, posX, posY);
+        }
     }
 }
