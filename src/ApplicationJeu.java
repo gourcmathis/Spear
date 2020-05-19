@@ -42,7 +42,8 @@ public class ApplicationJeu extends Application {
          });
 
          GraphicsContext gc = canvas.getGraphicsContext2D();
-         Personnage personnage = new Personnage(0,0,56);
+         Personnage personnage = new Personnage(0,0,70);
+         Squelette squelette = new Squelette(500,500,3,"file:assets/Squelette.png",40);
 
 
          Image sol = new Image ("file:assets/Sol.png",largeur,hauteur,true,false);
@@ -53,23 +54,34 @@ public class ApplicationJeu extends Application {
              {
                 //A CORRIGER : Vitesse du perso, il faut
                  // game logic
-
+            	
                 personnage.setDx(0);
                 personnage.setDy(0);
                  if (input.contains("LEFT"))
-                     personnage.setDx(-1);
+                     personnage.setDx(-2);
                  if (input.contains("RIGHT"))
-                     personnage.setDx(1);
+                     personnage.setDx(2);
                  if (input.contains("UP"))
-                     personnage.setDy(-1);
+                     personnage.setDy(-2);
                  if (input.contains("DOWN"))
-                     personnage.setDy(1);
+                     personnage.setDy(2);
 
                  personnage.move();
+                 
+                 if (squelette.posX<personnage.posX)
+                	 squelette.setDx(1);
+                 if (squelette.posX>personnage.posX)
+                	 squelette.setDx(-1);
+                 if (squelette.posY<personnage.posY)
+                	 squelette.setDy(1);
+                 if (squelette.posY>personnage.posY)
+                	 squelette.setDy(-1);
+                 squelette.move();
 
                  gc.clearRect(0,0,largeur,hauteur);
                  gc.drawImage(sol,0,0);
                  personnage.render(gc);
+                 squelette.render(gc);
 
 
 
