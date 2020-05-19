@@ -62,7 +62,7 @@ public class ApplicationJeu extends Application {
          });
 
          GraphicsContext gc = canvas.getGraphicsContext2D();
-         Personnage personnage = new Personnage(0,0,28);
+         Personnage personnage = new Personnage(0,0,56);
 
 
          Image sol = new Image ("file:assets/Sol.png",largeur,hauteur,true,false);
@@ -80,7 +80,7 @@ public class ApplicationJeu extends Application {
                 elapsed_time = (current_time-last_time)/1000000;
                 last_time = current_time;
                 acc_time += elapsed_time;
-                System.out.println(acc_time);
+
                 if (acc_time >=10) {
 
                     personnage.setDx(0);
@@ -121,6 +121,7 @@ public class ApplicationJeu extends Application {
   				ft.setToValue(0);
   				ft.setOnFinished(evt->gameMenu.setVisible(false));
   				ft.play();
+  				//gameMenu.setVisible(false);
 
   			});
 
@@ -135,6 +136,7 @@ public class ApplicationJeu extends Application {
   				ft.setOnFinished(evt->System.exit(0));
   				ft.play();
 
+
   			});
 
   			//Bouton Credit
@@ -146,6 +148,7 @@ public class ApplicationJeu extends Application {
   				ft.setToValue(0.5);
   				//ft.setOnFinished(evt->"a definir");
   				ft.play();
+
 
   			});
 
