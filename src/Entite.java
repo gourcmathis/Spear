@@ -26,6 +26,10 @@ public abstract class Entite {
         largeur = image.getWidth();
     }
 
+    public Image getImage(){
+        return(image);
+    }
+
     public int getPosX() {
         return posX;
     }
