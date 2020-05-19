@@ -1,28 +1,47 @@
 import com.sun.jdi.LongValue;
+
+import gamemenu.ApplicationJeu.GameMenu;
+import gamemenu.ApplicationJeu.MenuButton;
 import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.Group;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 import java.util.ArrayList;
 
 public class ApplicationJeu extends Application {
+	private GameMenu gameMenu;
     private final int hauteur = 1024;
     private final int largeur = 1024;
-    public static void main(String[] args) {
-        launch(args);
-     }
-     public void start (Stage theStage){
+    
+    @Override
+     public void start (Stage theStage)throws Exception{
          theStage.setTitle("Roguelike_game");
          Group root = new Group(); // noeud racine
+         Canvas canvas = new Canvas(hauteur,largeur);
+         gameMenu=new GameMenu();//Menu
+         
+         root.getChildren().addAll(canvas,gameMenu);
+         
          Scene theScene = new Scene(root); // conteneur du graphe
          theStage.setScene(theScene);
-         Canvas canvas = new Canvas(hauteur,largeur);
-         root.getChildren().add(canvas);
+         
+ 		 gameMenu.setVisible(true);
+
 
 
          //INPUTS
@@ -78,6 +97,116 @@ public class ApplicationJeu extends Application {
 
          theStage.show();
          }
+  //Contenu du menu
+  	public class GameMenu extends Parent{
+  		public GameMenu() {
+  			VBox menu=new VBox(15);
+  			
+  	  //Boutons
+  			//Bouton Jouer
+  			MenuButton btnJouer=new MenuButton("Jouer");
+  			
+  			//Quand on clique sur Jouer ca enleve le menu pour laisser le joueur jouer
+  			btnJouer.setOnMouseClicked(event->{
+  				FadeTransition ft=new FadeTransition(Duration.seconds(0.75),gameMenu);
+  				ft.setFromValue(1);
+  				ft.setToValue(0);
+  				ft.setOnFinished(evt->gameMenu.setVisible(false));
+  				ft.play();
+  				
+  			});
+  			
+  			
+  			//Bouton Quitter
+  			MenuButton btnQuitter=new MenuButton("Quitter");
+  			//Quand on clique sur Quitter ca quitte le jeu
+  			btnQuitter.setOnMouseClicked(event->{
+  				FadeTransition ft=new FadeTransition(Duration.seconds(0.75),gameMenu);
+  				ft.setFromValue(1);
+  				ft.setToValue(0.5);
+  				ft.setOnFinished(evt->System.exit(0));
+  				ft.play();
+  				
+  			});
+  			
+  			//Bouton Credit
+  			MenuButton btnCredit=new MenuButton("Credit");
+  			//Quand on clique sur Credit on affiche les credits
+  			btnCredit.setOnMouseClicked(event->{
+  				FadeTransition ft=new FadeTransition(Duration.seconds(0.75),gameMenu);
+  				ft.setFromValue(1);
+  				ft.setToValue(0.5);
+  				//ft.setOnFinished(evt->"a definir");
+  				ft.play();
+  				
+  			});
+  			
+  			//Centrage des boutons
+  			menu.setTranslateX(405);
+  			menu.setTranslateY(430);
+  			
+  			
+  			menu.getChildren().addAll(btnJouer,btnQuitter, btnCredit);
+  			
+  			
+  			Rectangle arriere=new Rectangle(512,512);
+  			arriere.setFill(Color.BLACK);
+  			arriere.setTranslateX(256);
+  			arriere.setTranslateY(256);
+  			
+  			//
+  			arriere.setOpacity(0.3);
+  			getChildren().addAll(arriere,menu);
+  			
+  		}
+  		
+  		
+  	}
+  	
+  	
+  //Boutons du menu sous forme de rectangle
+  	private static class MenuButton extends StackPane{
+  		private Text text;
+  		
+  		public MenuButton(String name) {
+  			text=new Text(name);
+  			
+  			//Police, couleur, taille ect du texte
+  			text.setFont(Font.font(20));
+  			text.setFill(Color.WHITE);
+  			
+  			Rectangle bouton=new Rectangle(200,30);
+  			
+  			//Police, couleur, taille ect du bouton
+  			bouton.setOpacity(0.7);
+  			bouton.setFill(Color.BLACK);
+  			setAlignment(Pos.CENTER);
+  			
+  			
+  			getChildren().addAll(bouton,text);
+  			
+  			//Esthetique des boutons quand la souris passe dessus
+  			setOnMouseEntered(event->{
+  				bouton.setFill(Color.WHITE);
+  				text.setFill(Color.BLACK);
+  			});
+  			setOnMouseExited(event->{
+  				bouton.setFill(Color.BLACK);
+  				text.setFill(Color.WHITE);
+  			});
+  			
+  			
+  		}
+  	}
+  	
+  	MenuButton btnOption=new MenuButton("Quitter");
+    public static void main(String[] args) {
+        launch(args);
+     }
+    
+    
+
+
 
      }
 
