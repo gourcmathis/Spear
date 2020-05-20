@@ -19,16 +19,18 @@ public class FenetreDeJeu {
 	private Stage gameStage;
 	private Canvas canvas ;
 	private Stage menuStage;
+	private int largeur=Variables.Largeur();
+	private int hauteur=Variables.Hauteur();
+	private long elapsed_time;
+	private long current_time;
+	private long acc_time;
+	private long last_time;
 	
 	
 	
 	public FenetreDeJeu() {
 		initializeStage();
 		
-		
-		
-
-     
 
 		
 	}
@@ -60,38 +62,60 @@ public class FenetreDeJeu {
         });
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        Personnage personnage = new Personnage(0,0,56);
+        Personnage personnage = new Personnage(largeur/2,hauteur/2,56);
 
 
-        Image sol = new Image ("file:assets/Sol.png",1024,1024, true,false);
+        Image sol = new Image ("file:assets/Sol.png",largeur,hauteur,true,false);
 
+        Salle salle = new Salle(16,16);
 
+        last_time = 0;
+        acc_time =0;
         new AnimationTimer() {
             public void handle(long currentNanoTime)
             {
-               //A CORRIGER : Vitesse du perso, il faut
+                //A CORRIGER : Vitesse du perso, il faut
                 // game logic
+                current_time = System.nanoTime();
+                elapsed_time = (current_time-last_time)/1000000;
+                last_time = current_time;
+                acc_time += elapsed_time;
 
-               personnage.setDx(0);
-               personnage.setDy(0);
-                if (input.contains("LEFT"))
-                    personnage.setDx(-1);
-                if (input.contains("RIGHT"))
-                    personnage.setDx(1);
-                if (input.contains("UP"))
-                    personnage.setDy(-1);
-                if (input.contains("DOWN"))
-                    personnage.setDy(1);
+                if (acc_time >=10) {
+                    //System.out.println(salle.getPosXSalle(personnage.getPosX()));
+                    personnage.setDx(0);
+                    personnage.setDy(0);
 
-                personnage.move();
+                    if (input.contains("LEFT")){
+                        personnage.setDx(-4);
+                    }
+                    if (input.contains("RIGHT")){
+                        personnage.setDx(4);
+                    }
+                    if (input.contains("UP")){
+                        personnage.setDy(-4);
+                    }
+                    if (input.contains("DOWN")) {
+                        personnage.setDy(4);
 
-                gc.clearRect(0,0,1024,1024);
-                gc.drawImage(sol,0,0);
+                    }
+                    personnage.move();
+
+                    salle.appCols(personnage);
+
+                    acc_time = 0;
+                }
+                //gc.clearRect(0,0,largeur,hauteur);
+                //gc.drawImage(sol,0,0);
+
+                salle.dessinerMap(gc);
                 personnage.render(gc);
 
 
+            }}.start();
 
-        }}.start();
+
+
 	}
 	
 	public void createNewGame(Stage menuStage) {
