@@ -62,7 +62,7 @@ public class ApplicationJeu extends Application {
          });
 
          GraphicsContext gc = canvas.getGraphicsContext2D();
-         Personnage personnage = new Personnage(0,0,56);
+         Personnage personnage = new Personnage(largeur/2,hauteur/2,56);
 
 
          Image sol = new Image ("file:assets/Sol.png",largeur,hauteur,true,false);
@@ -82,25 +82,35 @@ public class ApplicationJeu extends Application {
                 acc_time += elapsed_time;
 
                 if (acc_time >=10) {
-
+                    //System.out.println(salle.getPosXSalle(personnage.getPosX()));
                     personnage.setDx(0);
                     personnage.setDy(0);
-                    if (input.contains("LEFT"))
-                        personnage.setDx(-2);
-                    if (input.contains("RIGHT"))
-                        personnage.setDx(2);
-                    if (input.contains("UP"))
-                        personnage.setDy(-2);
-                    if (input.contains("DOWN"))
-                        personnage.setDy(2);
 
+                    if (input.contains("LEFT")){
+                        personnage.setDx(-4);
+                     }
+                    if (input.contains("RIGHT")){
+                        personnage.setDx(4);
+                        }
+                    if (input.contains("UP")){
+                        personnage.setDy(-4);
+                        }
+                    if (input.contains("DOWN")) {
+                        personnage.setDy(4);
+
+                    }
                     personnage.move();
+
+                    salle.appCols(personnage);
+
                     acc_time = 0;
                 }
                     //gc.clearRect(0,0,largeur,hauteur);
                     //gc.drawImage(sol,0,0);
+
                     salle.dessinerMap(gc);
                     personnage.render(gc);
+
 
          }}.start();
          theStage.show();
