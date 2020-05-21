@@ -12,6 +12,8 @@ public abstract class EntiteDynamique extends Entite {
         this.posX += dx;
         this.posY += dy;
     }
+    
+   
 
 
     public void setDx(int dx) {

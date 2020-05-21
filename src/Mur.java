@@ -1,5 +1,6 @@
 public class Mur extends Entite {
-    public Mur(int x, int y, String nomFichier,int pixelImage) {
-        super(x, y, nomFichier,pixelImage);
+    public Mur(int x, int y,int pixelImage) {
+
+        super(x, y,"file:assets/Mur.png",pixelImage);
     }
 }
