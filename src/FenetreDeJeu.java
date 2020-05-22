@@ -2,11 +2,16 @@
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
+import javafx.event.EventHandler;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class FenetreDeJeu {
@@ -21,6 +26,8 @@ public class FenetreDeJeu {
 	private long current_time;
 	private long acc_time;
 	private long last_time;
+	private double cursorX=largeur/2;
+	private double cursorY=hauteur/2;
 	
 	
 	
@@ -28,7 +35,7 @@ public class FenetreDeJeu {
 		initializeStage();
 
 
-		
+
 	}
 	
 
@@ -41,10 +48,18 @@ public class FenetreDeJeu {
 		gameStage.setTitle("Roguelike_game_Jeu");
 		gamePane.getChildren().add(canvas);
 		gameStage.setResizable(false);
-		
-		
-		
-		
+
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        Personnage personnage = new Personnage(largeur/2,hauteur/2,56);
+        Squelette squelette = new Squelette(500,100,4,"file:assets/Squelette.png",40);
+        Fleche fleche = new Fleche(largeur/2,hauteur/2,56);
+        Image image = new Image("file:assets/crosshair.png");
+        Salle salle = new Salle(16,16);
+
+        gameScene.setCursor(new ImageCursor(image,
+                image.getWidth() / 2,
+                image.getHeight() /2));
+
 		   //INPUTS
         ArrayList<String> input = new ArrayList<>();
 
@@ -61,14 +76,22 @@ public class FenetreDeJeu {
             input.remove(code);
         });
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        Personnage personnage = new Personnage(largeur/2,hauteur/2,56);
-        Squelette squelette = new Squelette(500,100,4,"file:assets/Squelette.png",40);
+
+        gameScene.setOnMouseClicked(
+                e -> {
+                    cursorX=e.getX();
+                    cursorY=e.getY();
+                    personnage.shoot((int)cursorX,(int)cursorY,salle);
+
+                });
+        
 
 
-        Image sol = new Image ("file:assets/Sol.png",largeur,hauteur,true,false);
 
-        Salle salle = new Salle(16,16);
+        salle.addEnnemi(squelette);
+
+
+
 
         last_time = 0;
         acc_time =0;
@@ -106,7 +129,13 @@ public class FenetreDeJeu {
                     }
                     personnage.move();
 
+                    //fleche.moveTo((int)cursorX,(int)cursorY);
+                    //fleche.move();
+                    salle.updateProjectiles();
                     salle.appCols(personnage);
+                    salle.pickupArrow(personnage);
+                    salle.ennemiesTakingDammage();
+                    //salle.appCols(fleche);
 
                     acc_time = 0;
                 }
@@ -116,8 +145,14 @@ public class FenetreDeJeu {
                 
 
                 salle.dessinerMap(gc);
+                salle.renderProjectiles(gc);
+
                 personnage.render(gc);
-                squelette.render(gc);
+
+                salle.renderEnnemis(gc);
+
+                //fleche.render(gc);
+
 
 
             }}.start();

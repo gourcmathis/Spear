@@ -5,7 +5,7 @@ import javafx.scene.image.Image;
 public abstract class Entite {
     protected int posX;
     protected int posY;
-    private Image image;
+    protected Image image;
     private double hauteur;
     private double largeur;
     private boolean visible;
@@ -22,6 +22,11 @@ public abstract class Entite {
 
     public void setImage(String nomFichier,int pixelImage ){
         image = new Image(nomFichier,pixelImage,pixelImage,true,false); // nomFichier est l'url de l'image source, conserve le ratio de l'image
+        hauteur = image.getHeight();
+        largeur = image.getWidth();
+    }
+    public void setImage(Image image){
+        this.image=image;
         hauteur = image.getHeight();
         largeur = image.getWidth();
     }

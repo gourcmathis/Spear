@@ -1,18 +1,26 @@
 public abstract class EntiteDynamique extends Entite {
     private int dx;
     private int dy;
-    private int lastposX;
-    private int lastposY;
+    protected int lastposX;
+    protected int lastposY;
+    private boolean ismoving=true;
+
 
     public EntiteDynamique(int x, int y,String nomFichier,int pixelImage) {
         super(x, y, nomFichier,pixelImage);
         dx = 0;
         dy = 0;
         lastposX = posX;
-        lastposY = posY;
+        lastposY =posY;
     }
 
+    public boolean isMoving(){
+        return(ismoving);
+    }
 
+    private void updateMotionstate(){
+        ismoving= !(dx==0 && dy==0);
+    }
     public void move() {
         lastposX = posX;
         lastposY = posY;
@@ -25,7 +33,10 @@ public abstract class EntiteDynamique extends Entite {
     public void resetpos(){
         posX = lastposX;
         posY = lastposY;
+        setDx(0);
+        setDy(0);
     }
+
 
     public int getLastposX() {
         return lastposX;
@@ -37,9 +48,12 @@ public abstract class EntiteDynamique extends Entite {
 
     public void setDx(int dx) {
         this.dx = dx;
+        updateMotionstate();
     }
 
     public void setDy(int dy) {
         this.dy = dy;
+        updateMotionstate();
+
     }
 }
