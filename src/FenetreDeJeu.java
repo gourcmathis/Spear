@@ -1,8 +1,4 @@
 
-
-
-
-
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
@@ -34,6 +30,7 @@ public class FenetreDeJeu {
 
 		
 	}
+	
 
 	private void initializeStage() {
 		gamePane=new AnchorPane();
@@ -44,6 +41,9 @@ public class FenetreDeJeu {
 		gameStage.setTitle("Roguelike_game_Jeu");
 		gamePane.getChildren().add(canvas);
 		gameStage.setResizable(false);
+		
+		
+		
 		
 		   //INPUTS
         ArrayList<String> input = new ArrayList<>();
@@ -63,6 +63,7 @@ public class FenetreDeJeu {
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Personnage personnage = new Personnage(largeur/2,hauteur/2,56);
+        Squelette squelette = new Squelette(500,100,4,"file:assets/Squelette.png",40);
 
 
         Image sol = new Image ("file:assets/Sol.png",largeur,hauteur,true,false);
@@ -71,6 +72,9 @@ public class FenetreDeJeu {
 
         last_time = 0;
         acc_time =0;
+        
+        
+        
         new AnimationTimer() {
             public void handle(long currentNanoTime)
             {
@@ -86,16 +90,17 @@ public class FenetreDeJeu {
                     personnage.setDx(0);
                     personnage.setDy(0);
 
-                    if (input.contains("LEFT")){
+                    if (input.contains("Q")){
                         personnage.setDx(-4);
                     }
-                    if (input.contains("RIGHT")){
+                    if (input.contains("D")){
                         personnage.setDx(4);
                     }
-                    if (input.contains("UP")){
+                    if (input.contains("Z")){
                         personnage.setDy(-4);
+                   
                     }
-                    if (input.contains("DOWN")) {
+                    if (input.contains("S")) {
                         personnage.setDy(4);
 
                     }
@@ -107,9 +112,12 @@ public class FenetreDeJeu {
                 }
                 //gc.clearRect(0,0,largeur,hauteur);
                 //gc.drawImage(sol,0,0);
+                
+                
 
                 salle.dessinerMap(gc);
                 personnage.render(gc);
+                squelette.render(gc);
 
 
             }}.start();
