@@ -52,7 +52,12 @@ public class FenetreDeJeu {
 		gamePane.getChildren().add(canvas);
 		gameStage.setResizable(false);
 
+        GraphicsContext gc = canvas.getGraphicsContext2D();
+        Personnage personnage = new Personnage(largeur/2,hauteur/2,56);
+        Fleche fleche = new Fleche(largeur/2,hauteur/2,56);
         Image image = new Image("file:assets/crosshair.png");
+        Salle salle = new Salle(16,16);
+
         gameScene.setCursor(new ImageCursor(image,
                 image.getWidth() / 2,
                 image.getHeight() /2));
@@ -77,16 +82,15 @@ public class FenetreDeJeu {
                 e -> {
                     cursorX=e.getX();
                     cursorY=e.getY();
+                    personnage.shoot((int)cursorX,(int)cursorY,salle);
 
                 });
 
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        Personnage personnage = new Personnage(largeur/2,hauteur/2,56);
-        Fleche fleche = new Fleche(largeur/2,hauteur/2,48);
 
 
-         Salle salle = new Salle(16,16);
+
+
 
         last_time = 0;
         acc_time =0;
@@ -119,11 +123,13 @@ public class FenetreDeJeu {
 
                     }
                     personnage.move();
-                    fleche.moveTo((int)cursorX,(int)cursorY);
-                    fleche.move();
 
+                    //fleche.moveTo((int)cursorX,(int)cursorY);
+                    //fleche.move();
+                    salle.updateProjectiles();
                     salle.appCols(personnage);
-                    salle.appCols(fleche);
+                    salle.pickupArrow(personnage);
+                    //salle.appCols(fleche);
 
                     acc_time = 0;
                 }
@@ -131,8 +137,10 @@ public class FenetreDeJeu {
                 //gc.drawImage(sol,0,0);
 
                 salle.dessinerMap(gc);
+                salle.renderProjectiles(gc);
+
                 personnage.render(gc);
-                fleche.render(gc);
+                //fleche.render(gc);
 
 
             }}.start();

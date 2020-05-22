@@ -6,14 +6,39 @@ public abstract class Projectile extends EntiteDynamique {
     private int speed=1;
     private int speedX;
     private int speedY;
-    private double theta=25;
+    protected int targetX;
+    protected int targetY;
+    private double theta=0;
     ImageView iv ;
     public Projectile(int x, int y, String nomFichier,int pixelImage) {
         super(x, y, nomFichier,pixelImage);
         iv = new ImageView(image);
         rotateImage();
     }
-        public void moveTo(int x,int y){
+
+   public void acquireTarget(int x, int y){
+        targetX=x;
+        targetY=y;
+   }
+
+   public void setDepart(int x,int y){
+        posX = x;
+        posY = y;
+    }
+
+    public void moveToTarget(){
+       int distanceX = (targetX-posX);
+       int distanceY = (targetY-posY);
+       speedX=distanceX/5;
+       speedY=distanceY/5;
+
+       setDx(speedX);
+       setDy(speedY);
+       calculAngle(distanceX,distanceY);
+       rotateImage();
+   }
+
+    public void moveTo(int x, int y){
 
             int distanceX = (x-posX);
             int distanceY = (y-posY);
@@ -21,9 +46,9 @@ public abstract class Projectile extends EntiteDynamique {
             speedY=distanceY/5;
 
             setDx(speedX);
-             setDy(speedY);
-             calculAngle(distanceX,distanceY);
-             rotateImage();
+            setDy(speedY);
+            calculAngle(distanceX,distanceY);
+            rotateImage();
         }
 
         private void calculAngle(int x, int y){

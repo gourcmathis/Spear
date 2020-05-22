@@ -22,4 +22,14 @@ public class Personnage extends EntiteVivante {
         fleches.remove(fleche);
     }
 
+    public void shoot(int x, int y,Salle salle){
+        if (!(fleches.isEmpty())) {
+            Fleche fleche = fleches.get(0);
+            fleche.setDepart(posX,posY);
+            fleche.acquireTarget(x, y);
+            fleches.remove(fleche);
+            salle.addProjectile(fleche);
+        }
+    }
+
 }
