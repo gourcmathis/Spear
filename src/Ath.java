@@ -19,7 +19,7 @@ public class Ath extends Parent{
 		
 		
 		//Ajout des informations utilent au joueur pendant le jeu
-		Data pV=new Data("file:assets/Joueur.png");
+		Data pv=new Data("file:assets/Joueur.png");
 		Data money=new Data("file:assets/Argent.png");
 		Data cle=new Data("file:assets/Cle.png");
 		Data fleche=new Data("file:assets/Fleche.png");
@@ -33,7 +33,7 @@ public class Ath extends Parent{
 	 	arriere.setArcHeight(25);
 		arriere.setArcWidth(25);
 		
-		ath.getChildren().addAll(pV,money,cle, fleche);
+		ath.getChildren().addAll(pv,money,cle, fleche);
 		getChildren().addAll(arriere,ath);
 		
 	}
