@@ -20,6 +20,7 @@ public class FenetreDeJeu {
 	private Stage gameStage;
 	private Canvas canvas ;
 	private Stage menuStage;
+	private Ath ath;
 	private int largeur=Variables.Largeur();
 	private int hauteur=Variables.Hauteur();
 	private long elapsed_time;
@@ -45,8 +46,10 @@ public class FenetreDeJeu {
 		gameStage=new Stage();
 		gameStage.setScene(gameScene);
 		canvas = new Canvas(1024,1024);
+		ath1=new Ath();
+		ath1.setTranslateX(160);
 		gameStage.setTitle("Roguelike_game_Jeu");
-		gamePane.getChildren().add(canvas);
+		gamePane.getChildren().addAll(canvas,ath1);
 		gameStage.setResizable(false);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
