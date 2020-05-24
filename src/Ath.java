@@ -1,4 +1,4 @@
-package com.test;
+
 
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
