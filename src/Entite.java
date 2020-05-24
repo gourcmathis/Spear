@@ -6,9 +6,9 @@ public abstract class Entite {
     protected int posX;
     protected int posY;
     protected Image image;
-    private double hauteur;
-    private double largeur;
-    private boolean visible;
+    protected double hauteur;
+    protected double largeur;
+    protected boolean visible;
 
 
 

@@ -5,7 +5,7 @@ public class Personnage extends EntiteVivante {
     private int nbFleches;
     public Personnage(int x, int y,int pixelImage)
     {
-        super(x, y, 3, "file:assets/Joueur.png",pixelImage);
+        super(x, y, 3, "file:assets/Joueur.png",pixelImage, new String[]{"file:assets/Prun1.png", "file:assets/Prun2.png","file:assets/Prun3.png","file:assets/Prun4.png"});
         fleches = new ArrayList<>();
         nbFleches=3;
         for (int i = 0; i <nbFleches ; i++) {

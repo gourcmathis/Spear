@@ -14,6 +14,7 @@ public abstract class Projectile extends EntiteDynamique {
         super(x, y, nomFichier,pixelImage);
         iv = new ImageView(image);
         rotateImage();
+        ismoving=true;
     }
 
    public void acquireTarget(int x, int y){

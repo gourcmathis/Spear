@@ -50,8 +50,8 @@ public class FenetreDeJeu {
 		gameStage.setResizable(false);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        Personnage personnage = new Personnage(largeur/2,hauteur/2,56);
-        Squelette squelette = new Squelette(500,100,4,"file:assets/Squelette.png",40);
+        Personnage personnage = new Personnage(largeur/2,hauteur/2,72);
+        Squelette squelette = new Squelette(500,100,4,"file:assets/Squelette.png",56);
         Fleche fleche = new Fleche(largeur/2,hauteur/2,56);
         Image image = new Image("file:assets/crosshair.png");
         Salle salle = new Salle(16,16);
@@ -108,10 +108,13 @@ public class FenetreDeJeu {
                 last_time = current_time;
                 acc_time += elapsed_time;
 
+
                 if (acc_time >=10) {
                     //System.out.println(salle.getPosXSalle(personnage.getPosX()));
                     personnage.setDx(0);
                     personnage.setDy(0);
+
+
 
                     if (input.contains("Q")){
                         personnage.setDx(-4);
@@ -129,6 +132,7 @@ public class FenetreDeJeu {
                     }
                     personnage.move();
 
+
                     //fleche.moveTo((int)cursorX,(int)cursorY);
                     //fleche.move();
                     salle.updateProjectiles();
@@ -139,6 +143,9 @@ public class FenetreDeJeu {
 
                     acc_time = 0;
                 }
+
+
+
                 //gc.clearRect(0,0,largeur,hauteur);
                 //gc.drawImage(sol,0,0);
                 
