@@ -131,6 +131,19 @@ public class FenetreDeJeu {
                         personnage.setDy(4);
 
                     }
+                    if (squelette.posX<personnage.posX) {
+                    	squelette.setDx(2);
+                    }
+                    if (squelette.posX>personnage.posX) {
+                    	squelette.setDx(-2);
+                    }
+                    if (squelette.posY<personnage.posY) {
+                    	squelette.setDy(2);
+                    }
+                    if (squelette.posY>personnage.posY) {
+                    	squelette.setDy(-2);
+                    }
+                    squelette.move();
                     personnage.move();
 
 
@@ -138,6 +151,7 @@ public class FenetreDeJeu {
                     //fleche.move();
                     salle.updateProjectiles();
                     salle.appCols(personnage);
+                    salle.appCols(squelette);
                     salle.pickupArrow(personnage);
                     salle.ennemiesTakingDammage();
                     //salle.appCols(fleche);
