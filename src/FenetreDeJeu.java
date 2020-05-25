@@ -46,6 +46,7 @@ public class FenetreDeJeu {
         Squelette squelette = new Squelette(500,100,4,"file:assets/Squelette.png",56);
         Argent argent = new Argent(600,200,"file:assets/Argent.png",40);
         Potion potion = new Potion(700,800,"file:assets/Potion.png",30);
+        Potion potion2 = new Potion(500,800,"file:assets/Potion.png",30);
         Cle cle = new Cle(200,800,"file:assets/Cle.png",56);
         Coffre coffre = new Coffre(800,800,"file:assets/Coffre.png",40);
         Fleche fleche = new Fleche(largeur/2,hauteur/2,56);
@@ -94,6 +95,7 @@ public class FenetreDeJeu {
         salle.addEnnemi(squelette);
         salle.addArgent(argent);
         salle.addPotion(potion);
+        salle.addPotion(potion2);
         salle.addCle(cle);
         salle.addCoffre(coffre);
 
@@ -184,13 +186,15 @@ public class FenetreDeJeu {
                 salle.dessinerMap(gc);
                 salle.renderProjectiles(gc);
 
-                personnage.render(gc);
+                
 
-                salle.renderEnnemis(gc);
+                
                 salle.renderArgent(gc);
                 salle.renderPotion(gc);
                 salle.renderCle(gc);
                 salle.renderCoffre(gc);
+                salle.renderEnnemis(gc);
+                personnage.render(gc);
 
                 //fleche.render(gc);
 
