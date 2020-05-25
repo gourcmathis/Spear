@@ -6,15 +6,16 @@ import java.util.List;
 import java.util.Random;
 
 public class Salle {
-    private int largeur; // largeur en UNITE
-    private int hauteur; // hauteur en UNITE
-    private int unite;
+    protected int largeur; // largeur en UNITE
+    protected int hauteur; // hauteur en UNITE
+    protected int unite;
     Mur mur;
     Sol sol;
     private int nbEnnemis;
     private int nbCoffres;
-    private int[][] quadrillage;
     private AStarGrid<Integer> pathfindinggrid;
+    Porte porte;
+    protected int[][] quadrillage;
     private ArrayList<Projectile> projectiles;
     private ArrayList<EntiteVivante> ennemis;
     private AStarAlgorithm A = new AStarAlgorithm();
@@ -29,9 +30,10 @@ public class Salle {
         largeur = caseLargeur;
         unite = Variables.Hauteur() / casesHauteur;
         quadrillage = new int[casesHauteur][caseLargeur];
-        creationMatrice();
+
         mur = new Mur(0,0,unite);
         sol = new Sol(0,0,unite);
+        porte=new Porte(0,0,unite);
         projectiles = new ArrayList<>();
         ennemis = new ArrayList<>();
         money = new ArrayList<>();
@@ -65,41 +67,41 @@ public class Salle {
             }
             }
         }
-
+    
     public void addArgent(Item i) {
     	money.add(i);
     }
-
+    
     public void pickupMoney(Personnage personnage) {
     	Iterator<Item> i= money.iterator();
     	if (!(money.isEmpty())) {
     	 while(i.hasNext()) {
              Item p = i.next();
              if (p instanceof Argent) {
-                 Argent argent = (Argent) p;
+                 Argent argent = (Argent) p;   
                  if (argent.intersects(personnage)) {
                       personnage.addArgent(argent);
                       i.remove();
-
+                     
                  }
              }
          }
     	}
-
+         
      }
-
+    
     public void addCoffre(Item i) {
     	coffres.add(i);
     }
-
-
+    
+    
     public void pickupCoffre(Personnage personnage, Cle cle) {
     	Iterator<Item> i= coffres.iterator();
     	 while(i.hasNext()) {
              Item p = i.next();
              if (p instanceof Coffre) {
-                 Coffre coffre = (Coffre) p;
-                 if (coffre.intersects(personnage) & personnage.getNbCle()>=1) {
+                 Coffre coffre = (Coffre) p;   
+                 if (coffre.intersects(personnage) & personnage.getNbCle()>=1) {  
 					personnage.removeCle(cle);
                       i.remove();
                       Random r = new Random();
@@ -113,48 +115,48 @@ public class Salle {
              }
          }
      }
-
+    
     public void addCle(Item i) {
     	cles.add(i);
     }
-
+    
     public void pickupCle(Personnage personnage) {
     	Iterator<Item> i= cles.iterator();
     	if (!(cles.isEmpty())) {
     	 while(i.hasNext()) {
              Item p = i.next();
              if (p instanceof Cle) {
-                 Cle cle = (Cle) p;
+                 Cle cle = (Cle) p;   
                  if (cle.intersects(personnage)) {
                       personnage.addCle(cle);
                       i.remove();
-
+                     
                  }
              }
          }
     	}
-
+         
      }
-
+    
     public void addPotion(Item i) {
     	potions.add(i);
     }
-
+    
     public void pickupPotion(Personnage personnage) {
     	Iterator<Item> i= potions.iterator();
     	 while(i.hasNext()) {
              Item p = i.next();
              if (p instanceof Potion) {
-                 Potion potion = (Potion) p;
+                 Potion potion = (Potion) p;   
                  if (potion.intersects(personnage) & personnage.pV<3) {
                       personnage.pV++;
                       i.remove();
-
+                     
                  }
              }
          }
      }
-
+    
     public void addEnnemi(EntiteVivante e) {
     	ennemis.add(e);
     }
@@ -205,6 +207,8 @@ public class Salle {
         }
         }
     }
+    
+    
 
     public void renderProjectiles(GraphicsContext gc){
         if (!(projectiles.isEmpty())) {
@@ -221,7 +225,7 @@ public class Salle {
             }
         }
     }
-
+    
     public void renderArgent(GraphicsContext gc){
         if (!(money.isEmpty())) {
             for (Item i : money) {
@@ -229,7 +233,7 @@ public class Salle {
             }
         }
     }
-
+    
     public void renderPotion(GraphicsContext gc){
         if (!(potions.isEmpty())) {
             for (Item i : potions) {
@@ -237,7 +241,7 @@ public class Salle {
             }
         }
     }
-
+    
     public void renderCoffre(GraphicsContext gc){
         if (!(coffres.isEmpty())) {
             for (Item i : coffres) {
@@ -245,7 +249,7 @@ public class Salle {
             }
         }
     }
-
+    
     public void renderCle(GraphicsContext gc){
         if (!(cles.isEmpty())) {
             for (Item i : cles) {
@@ -285,6 +289,8 @@ public class Salle {
         p.move();
         appCols(p);
     }
+    
+ 
 
     public int getPosXSalle(int x){
         return (x/unite);
@@ -478,24 +484,6 @@ public class Salle {
         return(mur.intersects(ed));
     }
 
-    private void creationMatrice(){
-        pathfindinggrid = new AStarGrid<>(largeur,hauteur);
-
-        for (int i = 0; i <hauteur ; i++) {
-            for (int j = 0; j <largeur ; j++) {
-                if (i == 0 || j ==0|| i==hauteur-1||j==largeur-1) {
-                    quadrillage[i][j]=1;
-                    pathfindinggrid.setCell(Integer.valueOf(1),j,i,false);
-                }
-                else{
-                    quadrillage[i][j] = 0;
-                    pathfindinggrid.setCell(Integer.valueOf(0),j,i,true);
-                }
-            }
-        }
-        quadrillage[4][4]=1;
-        pathfindinggrid.setCell(Integer.valueOf(1),4,4,false);
-    }
 
     public void getPath(int xdeb, int ydeb, int xfin, int yfin) {
         if (xdeb>=0 && xdeb<largeur && xfin>=0 && xfin<largeur && ydeb>=0 && ydeb<hauteur && yfin>=0 && yfin<hauteur){
@@ -519,11 +507,14 @@ public class Salle {
         for (int i = 0; i <hauteur ; i++) {
             for (int j = 0; j <largeur ; j++) {
 
-                if (quadrillage[i][j] == 1) {
+                if (quadrillage[j][i] == 1) {
                     gc.drawImage(mur.getImage(), j*unite, i * unite);
                 }
+                else if (quadrillage[j][i] == 2) {
+                    gc.drawImage(porte.getImage(), j*unite, i * unite);
+                }
 
-                else {
+                else if(quadrillage[j][i] == 0) {
                     gc.drawImage(sol.getImage(),j*unite,i*unite);
                 }
             }
@@ -531,4 +522,8 @@ public class Salle {
 
 
     }
+    
+    
 }
+
+

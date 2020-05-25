@@ -14,6 +14,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
+
 public class FenetreDeJeu {
 	private AnchorPane gamePane;
 	private Scene gameScene;
@@ -45,9 +46,8 @@ public class FenetreDeJeu {
 		canvas = new Canvas(1024,1024);
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
-        Personnage personnage = new Personnage(largeur/2,hauteur/2,64);
-        Squelette squelette = new Squelette(largeur/2,hauteur/2,4,"file:assets/Squelette.png",56);
-
+        Personnage personnage = new Personnage(largeur/2,hauteur/2,72);
+        Squelette squelette = new Squelette(500,100,4,"file:assets/Squelette.png",56);
         Argent argent = new Argent(600,200,"file:assets/Argent.png",40);
         Potion potion = new Potion(700,800,"file:assets/Potion.png",30);
         Cle cle = new Cle(200,800,"file:assets/Cle.png",56);
@@ -103,7 +103,6 @@ public class FenetreDeJeu {
 
 
 
-
         last_time = 0;
         acc_time =0;
         
@@ -126,7 +125,7 @@ public class FenetreDeJeu {
                     ath1.setargent(personnage.getNbArgent());
                     ath1.setpv(personnage.getpV());
                     ath1.setcle(personnage.getNbCle());
-
+                   
                     //System.out.println(salle.getPosXSalle(personnage.getPosX()));
                     personnage.setDx(0);
                     personnage.setDy(0);
@@ -147,6 +146,7 @@ public class FenetreDeJeu {
                         personnage.setDy(4);
 
                     }
+
                     personnage.move();
 
 
@@ -154,15 +154,15 @@ public class FenetreDeJeu {
                     //fleche.move();
                     salle.updateProjectiles();
                     salle.appCols(personnage);
-                    salle.pickupArrow(personnage);
+                    salle.appCols(squelette);
                     salle.pickupArrow(personnage);
                     salle.pickupMoney(personnage);
                     salle.pickupPotion(personnage);
                     salle.pickupCle(personnage);
                     salle.pickupCoffre(personnage, cle);
                     salle.ennemiesTakingDammage();
-                    salle.updateEnnemis(personnage);
-                    //salle.Listprint();
+                    //salle.appCols(fleche);
+
                     acc_time = 0;
                 }
 
