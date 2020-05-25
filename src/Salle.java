@@ -1,3 +1,6 @@
+
+
+
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
@@ -156,30 +159,44 @@ public class Salle {
     	ennemis.add(e);
     }
     
+    
     public void ennemiesTakingDammage() {
     	if (!(projectiles.isEmpty())) {
     	Iterator<EntiteVivante> i;
-	    	for (Projectile p : projectiles){
-	    		i=ennemis.iterator();
-	    		if (!(ennemis.isEmpty())) {
-		    		while(i.hasNext()) {
-		    			EntiteVivante e = i.next();
-		    			if (p instanceof Fleche) {
-		    				Fleche fleche = (Fleche) p;
-		    				if (fleche.intersects(e)) {
-		    					e.losepV();
-		    					if (e.getpV()==0) {
-		    						i.remove();
-		    					}
-		    				 }
-		    
-		    			 }
-		    		 }
-	    		}
+    	for (Projectile p : projectiles){
+    		i=ennemis.iterator();
+    		if (!(ennemis.isEmpty())) {
+    		while(i.hasNext()) {
+    			EntiteVivante e = i.next();
+    			if (p instanceof Fleche) {
+    				Fleche fleche = (Fleche) p;
+    				if (fleche.intersects(e)) {
+    					e.losepV();
+    					if (e.getpV()==0) {
+    						i.remove();
+    						Argent argent = new Argent(e.lastposX,e.lastposY,"file:assets/Argent.png",40);
+    						addArgent(argent);
+    						Random r = new Random();
+    					    int n = r.nextInt(3);
+    					    if (n==0) {
+    					    	Potion potion = new Potion(e.lastposX,e.lastposY,"file:assets/Potion.png",30);
+    					    	addPotion(potion);
+    					    }
+    					    Random a = new Random();
+    					    int m = a.nextInt(5);
+    					    if (m==0) {
+    					    	Cle cle = new Cle(e.lastposX,e.lastposY,"file:assets/Cle.png",56);
+    					    	addCle(cle);
+    					    }
+    					}
+    				}
+    
+    			}
+    		}
+    		}
     		}
     	}
     }
-  
 
 
     public void updateProjectiles(){
@@ -454,3 +471,4 @@ public class Salle {
 
 
     }
+}
