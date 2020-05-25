@@ -44,18 +44,19 @@ public class FenetreDeJeu {
 		gameStage.setScene(gameScene);
 		canvas = new Canvas(1024,1024);
 
-		ath1=new Ath();
-		ath1.setTranslateX(160);
-		gameStage.setTitle("Roguelike_game_Jeu");
-		gamePane.getChildren().addAll(canvas,ath1);
-		gameStage.setResizable(false);
-
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Personnage personnage = new Personnage(largeur/2,hauteur/2,72);
         Squelette squelette = new Squelette(500,100,4,"file:assets/Squelette.png",56);
         Fleche fleche = new Fleche(largeur/2,hauteur/2,56);
         Image image = new Image("file:assets/crosshair.png");
         Salle salle = new Salle(16,16);
+		ath1=new Ath(personnage);
+		ath1.setTranslateX(160);
+		gameStage.setTitle("Roguelike_game_Jeu");
+		gamePane.getChildren().addAll(canvas,ath1);
+		gameStage.setResizable(false);
+
+
 
         gameScene.setCursor(new ImageCursor(image,
                 image.getWidth() / 2,
@@ -111,6 +112,8 @@ public class FenetreDeJeu {
 
 
                 if (acc_time >=10) {
+
+                    ath1.setfleche(personnage.getNbFleches());
                     //System.out.println(salle.getPosXSalle(personnage.getPosX()));
                     personnage.setDx(0);
                     personnage.setDy(0);

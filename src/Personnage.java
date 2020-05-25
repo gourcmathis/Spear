@@ -22,6 +22,10 @@ public class Personnage extends EntiteVivante {
         fleches.remove(fleche);
     }
 
+    public int getNbFleches(){
+        return(fleches.size());
+    }
+
     public void shoot(int x, int y,Salle salle){
         if (!(fleches.isEmpty())) {
             Fleche fleche = fleches.get(0);
