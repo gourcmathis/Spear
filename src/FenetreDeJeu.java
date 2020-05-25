@@ -47,7 +47,7 @@ public class FenetreDeJeu {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Personnage personnage = new Personnage(largeur/2,hauteur/2,64);
         Squelette squelette = new Squelette(largeur/2,hauteur/2,4,"file:assets/Squelette.png",56);
-        Araignee araignee = new Araignee(450,100,2,"file:assets/Araignee.png",56);
+
         Argent argent = new Argent(600,200,"file:assets/Argent.png",40);
         Potion potion = new Potion(700,800,"file:assets/Potion.png",30);
         Cle cle = new Cle(200,800,"file:assets/Cle.png",56);
@@ -100,7 +100,7 @@ public class FenetreDeJeu {
         salle.addPotion(potion);
         salle.addCle(cle);
         salle.addCoffre(coffre);
-        salle.addEnnemi(araignee);
+
 
 
 
@@ -123,6 +123,10 @@ public class FenetreDeJeu {
                 if (acc_time >=10) {
 
                     ath1.setfleche(personnage.getNbFleches());
+                    ath1.setargent(personnage.getNbArgent());
+                    ath1.setpv(personnage.getpV());
+                    ath1.setcle(personnage.getNbCle());
+
                     //System.out.println(salle.getPosXSalle(personnage.getPosX()));
                     personnage.setDx(0);
                     personnage.setDy(0);
@@ -151,8 +155,12 @@ public class FenetreDeJeu {
                     salle.updateProjectiles();
                     salle.appCols(personnage);
                     salle.pickupArrow(personnage);
+                    salle.pickupArrow(personnage);
+                    salle.pickupMoney(personnage);
+                    salle.pickupPotion(personnage);
+                    salle.pickupCle(personnage);
+                    salle.pickupCoffre(personnage, cle);
                     salle.ennemiesTakingDammage();
-                    //salle.appCols(fleche);
                     salle.updateEnnemis(personnage);
                     //salle.Listprint();
                     acc_time = 0;

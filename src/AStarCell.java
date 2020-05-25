@@ -46,6 +46,14 @@ public class AStarCell<T> implements Cloneable {
 		return h;
 	}
 
+	public int getRow() {
+		return row;
+	}
+
+	public int getCol() {
+		return col;
+	}
+
 	/**
 	 * Cloning only used in order to show the steps of the A* algorithm.
 	 */
