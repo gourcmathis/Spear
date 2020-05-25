@@ -3,9 +3,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public abstract class Projectile extends EntiteDynamique {
-    private int speed=1;
-    private int speedX;
-    private int speedY;
     protected int targetX;
     protected int targetY;
     private double theta=0;
@@ -30,8 +27,8 @@ public abstract class Projectile extends EntiteDynamique {
     public void moveToTarget(){
        int distanceX = (targetX-posX);
        int distanceY = (targetY-posY);
-       speedX=distanceX/5;
-       speedY=distanceY/5;
+        int speedX = distanceX / 5;
+        int speedY = distanceY / 5;
 
        setDx(speedX);
        setDy(speedY);
@@ -39,18 +36,7 @@ public abstract class Projectile extends EntiteDynamique {
        rotateImage();
    }
 
-    public void moveTo(int x, int y){
 
-            int distanceX = (x-posX);
-            int distanceY = (y-posY);
-            speedX=distanceX/5;
-            speedY=distanceY/5;
-
-            setDx(speedX);
-            setDy(speedY);
-            calculAngle(distanceX,distanceY);
-            rotateImage();
-        }
 
         private void calculAngle(int x, int y){
             if (x!=0) {

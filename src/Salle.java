@@ -2,6 +2,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Random;
 
 public class Salle {
@@ -13,8 +14,11 @@ public class Salle {
     private int nbEnnemis;
     private int nbCoffres;
     private int[][] quadrillage;
+    private AStarGrid<Integer> pathfindinggrid;
     private ArrayList<Projectile> projectiles;
     private ArrayList<EntiteVivante> ennemis;
+    private AStarAlgorithm A = new AStarAlgorithm();
+    List<AStarCell> totalPath = new ArrayList<>(200);
     private ArrayList<Item> money;
     private ArrayList<Item> potions;
     private ArrayList<Item> cles;
@@ -61,41 +65,41 @@ public class Salle {
             }
             }
         }
-    
+
     public void addArgent(Item i) {
     	money.add(i);
     }
-    
+
     public void pickupMoney(Personnage personnage) {
     	Iterator<Item> i= money.iterator();
     	if (!(money.isEmpty())) {
     	 while(i.hasNext()) {
              Item p = i.next();
              if (p instanceof Argent) {
-                 Argent argent = (Argent) p;   
+                 Argent argent = (Argent) p;
                  if (argent.intersects(personnage)) {
                       personnage.addArgent(argent);
                       i.remove();
-                     
+
                  }
              }
          }
     	}
-         
+
      }
-    
+
     public void addCoffre(Item i) {
     	coffres.add(i);
     }
-    
-    
+
+
     public void pickupCoffre(Personnage personnage, Cle cle) {
     	Iterator<Item> i= coffres.iterator();
     	 while(i.hasNext()) {
              Item p = i.next();
              if (p instanceof Coffre) {
-                 Coffre coffre = (Coffre) p;   
-                 if (coffre.intersects(personnage) & personnage.getNbCle()>=1) {  
+                 Coffre coffre = (Coffre) p;
+                 if (coffre.intersects(personnage) & personnage.getNbCle()>=1) {
 					personnage.removeCle(cle);
                       i.remove();
                       Random r = new Random();
@@ -109,48 +113,48 @@ public class Salle {
              }
          }
      }
-    
+
     public void addCle(Item i) {
     	cles.add(i);
     }
-    
+
     public void pickupCle(Personnage personnage) {
     	Iterator<Item> i= cles.iterator();
     	if (!(cles.isEmpty())) {
     	 while(i.hasNext()) {
              Item p = i.next();
              if (p instanceof Cle) {
-                 Cle cle = (Cle) p;   
+                 Cle cle = (Cle) p;
                  if (cle.intersects(personnage)) {
                       personnage.addCle(cle);
                       i.remove();
-                     
+
                  }
              }
          }
     	}
-         
+
      }
-    
+
     public void addPotion(Item i) {
     	potions.add(i);
     }
-    
+
     public void pickupPotion(Personnage personnage) {
     	Iterator<Item> i= potions.iterator();
     	 while(i.hasNext()) {
              Item p = i.next();
              if (p instanceof Potion) {
-                 Potion potion = (Potion) p;   
+                 Potion potion = (Potion) p;
                  if (potion.intersects(personnage) & personnage.pV<3) {
                       personnage.pV++;
                       i.remove();
-                     
+
                  }
              }
          }
      }
-    
+
     public void addEnnemi(EntiteVivante e) {
     	ennemis.add(e);
     }
@@ -201,8 +205,6 @@ public class Salle {
         }
         }
     }
-    
-    
 
     public void renderProjectiles(GraphicsContext gc){
         if (!(projectiles.isEmpty())) {
@@ -219,7 +221,7 @@ public class Salle {
             }
         }
     }
-    
+
     public void renderArgent(GraphicsContext gc){
         if (!(money.isEmpty())) {
             for (Item i : money) {
@@ -227,7 +229,7 @@ public class Salle {
             }
         }
     }
-    
+
     public void renderPotion(GraphicsContext gc){
         if (!(potions.isEmpty())) {
             for (Item i : potions) {
@@ -235,7 +237,7 @@ public class Salle {
             }
         }
     }
-    
+
     public void renderCoffre(GraphicsContext gc){
         if (!(coffres.isEmpty())) {
             for (Item i : coffres) {
@@ -243,7 +245,7 @@ public class Salle {
             }
         }
     }
-    
+
     public void renderCle(GraphicsContext gc){
         if (!(cles.isEmpty())) {
             for (Item i : cles) {
@@ -252,20 +254,44 @@ public class Salle {
         }
     }
 
+    public void updateEnnemis(Personnage p){
+        if (!(ennemis.isEmpty())) {
+            int px=getPosXSalle(p.getPosX());
+            int py=getPosYSalle(p.getPosY());
+            for (EntiteVivante e : ennemis) {
+                updateEnnemi(e,px,py);
+            }
+        }
+
+    }
+
+    public void updateEnnemi(EntiteVivante ed,int targetX,int targetY){
+
+        int x = getPosXSalle(ed.getPosX());
+        int y = getPosYSalle(ed.getPosY());
+        int movex;
+        int movey;
+
+        ed.moveTo(getPosReelX(targetX),getPosReelY(targetY));
+
+        ed.move();
+
+
+    }
+
+
     public void updateProjectile(Projectile p){
         p.moveToTarget();
         p.move();
         appCols(p);
     }
-    
- 
 
     public int getPosXSalle(int x){
-        return (int) Math.floor(x/unite);
+        return (x/unite);
     }
 
     public int getPosYSalle(int y){
-        return((int) Math.floor(y/unite));
+        return(y/unite);
     }
 
     public int getPosReelX(int x){
@@ -453,17 +479,39 @@ public class Salle {
     }
 
     private void creationMatrice(){
+        pathfindinggrid = new AStarGrid<>(largeur,hauteur);
+
         for (int i = 0; i <hauteur ; i++) {
             for (int j = 0; j <largeur ; j++) {
                 if (i == 0 || j ==0|| i==hauteur-1||j==largeur-1) {
                     quadrillage[i][j]=1;
+                    pathfindinggrid.setCell(Integer.valueOf(1),j,i,false);
                 }
                 else{
                     quadrillage[i][j] = 0;
+                    pathfindinggrid.setCell(Integer.valueOf(0),j,i,true);
                 }
             }
         }
         quadrillage[4][4]=1;
+        pathfindinggrid.setCell(Integer.valueOf(1),4,4,false);
+    }
+
+    public void getPath(int xdeb, int ydeb, int xfin, int yfin) {
+        if (xdeb>=0 && xdeb<largeur && xfin>=0 && xfin<largeur && ydeb>=0 && ydeb<hauteur && yfin>=0 && yfin<hauteur){
+            A = new AStarAlgorithm();
+            totalPath.clear();
+            totalPath=A.getPath(pathfindinggrid,pathfindinggrid.getCell(xfin,yfin),pathfindinggrid.getCell(xdeb,ydeb),false);
+        }
+
+    }
+
+    public void Listprint( ){
+        for (int i = 0; i <totalPath.size() ; i++) {
+            System.out.println("ligne:"+totalPath.get(i).getRow()+"col :"+totalPath.get(i).getCol());
+        }
+        System.out.println("__");
+        System.out.println("__");
     }
 
 
@@ -483,8 +531,4 @@ public class Salle {
 
 
     }
-    
-    
 }
-
-
