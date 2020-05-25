@@ -2,6 +2,7 @@ import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 public class Salle {
     private int largeur; // largeur en UNITE
@@ -14,6 +15,10 @@ public class Salle {
     private int[][] quadrillage;
     private ArrayList<Projectile> projectiles;
     private ArrayList<EntiteVivante> ennemis;
+    private ArrayList<Item> money;
+    private ArrayList<Item> potions;
+    private ArrayList<Item> cles;
+    private ArrayList<Item> coffres;
 
     public Salle(int casesHauteur,int caseLargeur ) {
         hauteur = casesHauteur;
@@ -25,6 +30,10 @@ public class Salle {
         sol = new Sol(0,0,unite);
         projectiles = new ArrayList<>();
         ennemis = new ArrayList<>();
+        money = new ArrayList<>();
+        potions = new ArrayList<>();
+        cles = new ArrayList<>();
+        coffres = new ArrayList<>();
         }
 
     public void addProjectile(Projectile p){
@@ -53,6 +62,95 @@ public class Salle {
             }
         }
     
+    public void addArgent(Item i) {
+    	money.add(i);
+    }
+    
+    public void pickupMoney(Personnage personnage) {
+    	Iterator<Item> i= money.iterator();
+    	if (!(money.isEmpty())) {
+    	 while(i.hasNext()) {
+             Item p = i.next();
+             if (p instanceof Argent) {
+                 Argent argent = (Argent) p;   
+                 if (argent.intersects(personnage)) {
+                      personnage.addArgent(argent);
+                      i.remove();
+                     
+                 }
+             }
+         }
+    	}
+         
+     }
+    
+    public void addCoffre(Item i) {
+    	coffres.add(i);
+    }
+    
+    
+    public void pickupCoffre(Personnage personnage, Cle cle) {
+    	Iterator<Item> i= coffres.iterator();
+    	 while(i.hasNext()) {
+             Item p = i.next();
+             if (p instanceof Coffre) {
+                 Coffre coffre = (Coffre) p;   
+                 if (coffre.intersects(personnage) & personnage.getNbCle()>=1) {  
+					personnage.removeCle(cle);
+                      i.remove();
+                      Random r = new Random();
+					  int n = r.nextInt(5);
+					  n+=5;
+					  for (int y=0; y<n; y++) {
+						  Argent argent = new Argent(p.posX,p.posY,"file:assets/Argent.png",40);
+  						  addArgent(argent);
+					  }
+                 }
+             }
+         }
+     }
+    
+    public void addCle(Item i) {
+    	cles.add(i);
+    }
+    
+    public void pickupCle(Personnage personnage) {
+    	Iterator<Item> i= cles.iterator();
+    	if (!(cles.isEmpty())) {
+    	 while(i.hasNext()) {
+             Item p = i.next();
+             if (p instanceof Cle) {
+                 Cle cle = (Cle) p;   
+                 if (cle.intersects(personnage)) {
+                      personnage.addCle(cle);
+                      i.remove();
+                     
+                 }
+             }
+         }
+    	}
+         
+     }
+    
+    public void addPotion(Item i) {
+    	potions.add(i);
+    }
+    
+    public void pickupPotion(Personnage personnage) {
+    	Iterator<Item> i= potions.iterator();
+    	 while(i.hasNext()) {
+             Item p = i.next();
+             if (p instanceof Potion) {
+                 Potion potion = (Potion) p;   
+                 if (potion.intersects(personnage) & personnage.pV<3) {
+                      personnage.pV++;
+                      i.remove();
+                     
+                 }
+             }
+         }
+     }
+    
     public void addEnnemi(EntiteVivante e) {
     	ennemis.add(e);
     }
@@ -71,6 +169,20 @@ public class Salle {
     					e.losepV();
     					if (e.getpV()==0) {
     						i.remove();
+    						Argent argent = new Argent(e.lastposX,e.lastposY,"file:assets/Argent.png",40);
+    						addArgent(argent);
+    						Random r = new Random();
+    					    int n = r.nextInt(3);
+    					    if (n==0) {
+    					    	Potion potion = new Potion(e.lastposX,e.lastposY,"file:assets/Potion.png",30);
+    					    	addPotion(potion);
+    					    }
+    					    Random a = new Random();
+    					    int m = a.nextInt(5);
+    					    if (m==0) {
+    					    	Cle cle = new Cle(e.lastposX,e.lastposY,"file:assets/Cle.png",56);
+    					    	addCle(cle);
+    					    }
     					}
     				}
     
@@ -89,6 +201,8 @@ public class Salle {
         }
         }
     }
+    
+    
 
     public void renderProjectiles(GraphicsContext gc){
         if (!(projectiles.isEmpty())) {
@@ -105,12 +219,46 @@ public class Salle {
             }
         }
     }
+    
+    public void renderArgent(GraphicsContext gc){
+        if (!(money.isEmpty())) {
+            for (Item i : money) {
+                i.render(gc);
+            }
+        }
+    }
+    
+    public void renderPotion(GraphicsContext gc){
+        if (!(potions.isEmpty())) {
+            for (Item i : potions) {
+                i.render(gc);
+            }
+        }
+    }
+    
+    public void renderCoffre(GraphicsContext gc){
+        if (!(coffres.isEmpty())) {
+            for (Item i : coffres) {
+                i.render(gc);
+            }
+        }
+    }
+    
+    public void renderCle(GraphicsContext gc){
+        if (!(cles.isEmpty())) {
+            for (Item i : cles) {
+                i.render(gc);
+            }
+        }
+    }
 
     public void updateProjectile(Projectile p){
         p.moveToTarget();
         p.move();
         appCols(p);
     }
+    
+ 
 
     public int getPosXSalle(int x){
         return (int) Math.floor(x/unite);

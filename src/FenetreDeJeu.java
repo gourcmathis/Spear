@@ -2,17 +2,14 @@
 import java.util.ArrayList;
 
 import javafx.animation.AnimationTimer;
-import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
+
 
 public class FenetreDeJeu {
 	private AnchorPane gamePane;
@@ -47,6 +44,10 @@ public class FenetreDeJeu {
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Personnage personnage = new Personnage(largeur/2,hauteur/2,72);
         Squelette squelette = new Squelette(500,100,4,"file:assets/Squelette.png",56);
+        Argent argent = new Argent(600,200,"file:assets/Argent.png",40);
+        Potion potion = new Potion(700,800,"file:assets/Potion.png",30);
+        Cle cle = new Cle(200,800,"file:assets/Cle.png",56);
+        Coffre coffre = new Coffre(800,800,"file:assets/Coffre.png",40);
         Fleche fleche = new Fleche(largeur/2,hauteur/2,56);
         Image image = new Image("file:assets/crosshair.png");
         Salle salle = new Salle(16,16);
@@ -91,7 +92,10 @@ public class FenetreDeJeu {
 
 
         salle.addEnnemi(squelette);
-
+        salle.addArgent(argent);
+        salle.addPotion(potion);
+        salle.addCle(cle);
+        salle.addCoffre(coffre);
 
 
 
@@ -114,6 +118,10 @@ public class FenetreDeJeu {
                 if (acc_time >=10) {
 
                     ath1.setfleche(personnage.getNbFleches());
+                    ath1.setargent(personnage.getNbArgent());
+                    ath1.setpv(personnage.getpV());
+                    ath1.setcle(personnage.getNbCle());
+                   
                     //System.out.println(salle.getPosXSalle(personnage.getPosX()));
                     personnage.setDx(0);
                     personnage.setDy(0);
@@ -156,6 +164,10 @@ public class FenetreDeJeu {
                     salle.appCols(personnage);
                     salle.appCols(squelette);
                     salle.pickupArrow(personnage);
+                    salle.pickupMoney(personnage);
+                    salle.pickupPotion(personnage);
+                    salle.pickupCle(personnage);
+                    salle.pickupCoffre(personnage, cle);
                     salle.ennemiesTakingDammage();
                     //salle.appCols(fleche);
 
@@ -175,6 +187,10 @@ public class FenetreDeJeu {
                 personnage.render(gc);
 
                 salle.renderEnnemis(gc);
+                salle.renderArgent(gc);
+                salle.renderPotion(gc);
+                salle.renderCle(gc);
+                salle.renderCoffre(gc);
 
                 //fleche.render(gc);
 

@@ -61,14 +61,14 @@ public class Ath extends Parent{
 					valeur=new Text(Integer.toString(p.getpV()));
 					break;
 				case DATACLE:
-					valeur=new Text("0");
+					valeur=new Text(Integer.toString(p.getNbCle()));
 					break;
 				case DATAFLECHE:
 					valeur=new Text(Integer.toString(p.getNbFleches()));
 					break;
 
 				case DATAARGENT:
-					valeur=new Text("0");
+					valeur=new Text(Integer.toString(p.getNbArgent()));
 					break;
 			}
 
