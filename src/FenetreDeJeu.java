@@ -176,17 +176,17 @@ public class FenetreDeJeu {
                     }
 
                     personnage.move();
-
+					m.updateSalle();
+					m.renderSalle(gc);
 
                     acc_time = 0;
                 }
-           
 
 
 
-                //gc.clearRect(0,0,largeur,hauteur);
-                //gc.drawImage(sol,0,0);
-				m.renderSalle(gc);
+
+				m.changementSalle(m.getSalleCourante().getchange(),canvas);
+
 				personnage.render(gc);
 
 
@@ -234,10 +234,6 @@ public class FenetreDeJeu {
 
 
             }}.start();
-         
-            
-          
-
 
 
 	}
