@@ -246,14 +246,16 @@ public abstract class Salle {
 					e.setDx(-15);
 					e.setDy(-15);
 					e.move();
+					appCols(e);
 					personnage.setDx(15);
 					personnage.setDy(15);
 					personnage.move();
+					appCols(personnage);
 					if (personnage.pV == 0) {
-						GameOver gameOver=new GameOver();
-						Stage window = new Stage();
-						window = gameOver.getMainStage();
-						window.show();
+						//GameOver gameOver=new GameOver();
+						//Stage window = new Stage();
+						//window = gameOver.getMainStage();
+						//window.show();
 
 					}
 

@@ -72,9 +72,7 @@ public class FenetreDeJeu {
 
 
 
-        Salle3 salle = new Salle3(16,16);
-        salle.creergrid();
-        salle.gridprint();
+
 
 		ath1=new Ath(personnage);
 		ath1.setTranslateX(160);
@@ -121,7 +119,7 @@ public class FenetreDeJeu {
 	                    cursorX=e.getX();
 	                    cursorY=e.getY();
 	                    if(pause==false) {
-	                    	personnage.shoot((int)cursorX,(int)cursorY,salle);
+	                    	personnage.shoot((int)cursorX,(int)cursorY,m.getSalleCourante());
 	                    }
 
 	                });
@@ -150,7 +148,7 @@ public class FenetreDeJeu {
                     ath1.setargent(personnage.getNbArgent());
                     ath1.setpv(personnage.getpV());
                     ath1.setcle(personnage.getNbCle());
-                    //System.out.println(salle.getPosXSalle(personnage.getPosX()));
+
                     personnage.setDx(0);
                     personnage.setDy(0);
 
@@ -173,11 +171,8 @@ public class FenetreDeJeu {
 
                     
                     personnage.move();
-                	Random r = new Random();
-				    int n = r.nextInt(5);
-				    if(n==0) {
-				        salle.JoueurTakingDammage(personnage);
-				    }
+
+
 
 
 
@@ -188,18 +183,10 @@ public class FenetreDeJeu {
                     acc_time = 0;
                 }
 
-
-
-
                 m.renderSalle(gc);
-
-
                 personnage.render(gc);
 
 
-           
-
-                //fleche.render(gc);
                 ///////////////////PAUSE////////////////////////////////////:
                 if (input.contains("ESCAPE")) {
                 		pause=true;

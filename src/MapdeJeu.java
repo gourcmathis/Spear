@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.util.Duration;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class MapdeJeu {
     private Salle salleCourante;
@@ -37,6 +38,13 @@ public class MapdeJeu {
         salleCourante.pickupCoffre(joueur);
         salleCourante.ennemiesTakingDammage();
         salleCourante.updateEnnemis(joueur);
+
+        Random r = new Random();
+        int n = r.nextInt(5);
+        if(n==0) {
+            salleCourante.JoueurTakingDammage(joueur);
+        }
+        salleCourante.JoueurTakingDammage(joueur);
     }
     public void renderSalle(GraphicsContext gc){
         salleCourante.dessinerMap(gc);

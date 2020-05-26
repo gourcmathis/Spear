@@ -53,7 +53,7 @@ public abstract class EntiteVivante extends EntiteDynamique {
     }
     
     public void losepV() {
-    	this.pV=pV-1;
+    	pV--;
     }
 
 	public int getpV() {
