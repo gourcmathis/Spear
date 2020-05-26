@@ -1,14 +1,20 @@
 
 
 
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import com.test.EntiteVivante;
-import com.test.Personnage;
+import javafx.scene.shape.Rectangle;
+
+
+
 
 public class Salle {
     protected int largeur; // largeur en UNITE
@@ -200,6 +206,9 @@ public class Salle {
     		}
     	}
     }
+    
+    
+    
     public void JoueurTakingDammage(Personnage personnage) {
 			
     	Iterator<EntiteVivante> i;
@@ -216,6 +225,13 @@ public class Salle {
 					personnage.setDx(15);
 					personnage.setDy(15);
 					personnage.move();
+					if (personnage.pV == 0) {
+						GameOver gameOver=new GameOver();
+						Stage window = new Stage();
+						window = gameOver.getMainStage();
+						window.show();
+						
+					}
 				 
 					
 				}
