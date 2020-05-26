@@ -1,19 +1,8 @@
-
 import java.util.ArrayList;
 import java.util.Random;
 
 import javafx.animation.AnimationTimer;
-import javafx.scene.ImageCursor;
-import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
-import javafx.stage.Stage;
-
-import java.util.ArrayList;
-
-import javafx.animation.AnimationTimer;
+import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -24,7 +13,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class FenetreDeJeu {
 	private AnchorPane gamePane;
@@ -41,6 +36,11 @@ public class FenetreDeJeu {
 	private long last_time;
 	private double cursorX=largeur/2;
 	private double cursorY=hauteur/2;
+	private boolean pause;
+	private PauseMenu pauseMenu;
+
+
+	
 	public FenetreDeJeu() {
 		initializeStage();
 
@@ -57,18 +57,32 @@ public class FenetreDeJeu {
 		gameStage.setScene(gameScene);
 		canvas = new Canvas(1024,1024);
 
+
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Personnage personnage = new Personnage(largeur/2,hauteur/2,72);
+
    
 
     
         Fleche fleche = new Fleche(largeur/2,hauteur/2,56);
         Image image = new Image("file:assets/crosshair.png");
-        Salle1 salle = new Salle1(16,16);
+        Salle3 salle = new Salle3(16,16);
+        //Salle salle = new Salle(16,16);
+        //salle=salle1;
 		ath1=new Ath(personnage);
 		ath1.setTranslateX(160);
+		pauseMenu=new PauseMenu();
+		Text text=new  Text("Press esc to pause");
+		text.setFont(Font.loadFont("file:assets/masoneer.ttf", 15));
+		text.setFill(Color.WHITE);
+		text.setTranslateX(800);
+		text.setTranslateY(990);
+	
+		pauseMenu.setVisible(false);
+	
+
 		gameStage.setTitle("Roguelike_game_Jeu");
-		gamePane.getChildren().addAll(canvas,ath1);
+		gamePane.getChildren().addAll(canvas,ath1,pauseMenu,text);
 		gameStage.setResizable(false);
 
 
@@ -94,22 +108,18 @@ public class FenetreDeJeu {
         });
 
 
-        gameScene.setOnMouseClicked(
-                e -> {
-                    cursorX=e.getX();
-                    cursorY=e.getY();
-                    personnage.shoot((int)cursorX,(int)cursorY,salle);
-
-                });
-
+      
+	        gameScene.setOnMouseClicked(
+	                e -> {
+	                    cursorX=e.getX();
+	                    cursorY=e.getY();
+	                    if(pause==false) {
+	                    	personnage.shoot((int)cursorX,(int)cursorY,salle);
+	                    }
+	
+	                });
         
-
-
-
-
-
-        
-
+ 
         last_time = 0;
         acc_time =0;
         
@@ -154,7 +164,7 @@ public class FenetreDeJeu {
 
                     }
                 
-	               if (salle.squelette1.posX<personnage.posX) {
+	                if (salle.squelette1.posX<personnage.posX) {
 	                	salle.squelette1.setDx(2);
 	                }
 	                if (salle.squelette1.posX>personnage.posX) {
@@ -172,26 +182,30 @@ public class FenetreDeJeu {
                 	Random r = new Random();
 				    int n = r.nextInt(5);
 				    if(n==0) {
+				    	
 				        salle.JoueurTakingDammage(personnage);
 				    }
 
-				    
+
 
                     //fleche.moveTo((int)cursorX,(int)cursorY);
                     //fleche.move();
                     salle.updateProjectiles();
                     salle.appCols(personnage);
+                    salle.appCols(salle.squelette1);
                     salle.pickupArrow(personnage);
                     salle.pickupMoney(personnage);
                     salle.pickupPotion(personnage);
                     salle.pickupCle(personnage);
                     salle.pickupCoffre(personnage, salle.cle);
-      
+             
                     salle.ennemiesTakingDammage();
                     //salle.appCols(fleche);
+            
 
                     acc_time = 0;
                 }
+           
 
 
 
@@ -216,18 +230,53 @@ public class FenetreDeJeu {
 
 
                 //fleche.render(gc);
+                ///////////////////PAUSE////////////////////////////////////:
+                if (input.contains("ESCAPE")) {
+                		pause=true;
+      					stop();
+      					pauseMenu.setVisible(true);
+      					ath1.setVisible(false);
+      					text.setVisible(false);
 
+      			}
+        
+                
+               pauseMenu.getBtnJouer().setOnMouseClicked(event->{
+      				FadeTransition ft=new FadeTransition(Duration.seconds(0.4),gamePane);
+      				ft.setFromValue(1);
+      				ft.setToValue(1);
+      				ft.setOnFinished(evt->{
+      					start();
+      					pauseMenu.setVisible(false);
+      					ath1.setVisible(true);
+      					pause=false;
+    
+      					
+      				});
+      				
+      				ft.play();
+
+    				
+    			});
+          
 
 
             }}.start();
+         
+            
+          
 
 
 
 	}
 	
+
+         
+	
 	public void createNewGame(Stage menuStage) {
 		this.menuStage=menuStage;
 		this.menuStage.hide();
+
 		gameStage.show();
 		
 	}

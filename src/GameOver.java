@@ -57,7 +57,7 @@ public class GameOver extends Parent {
 				ft.setFromValue(1);
 				ft.setToValue(0);
 				ft.play();
-				//ft.setOnFinished(evt->System.exit(0));
+				ft.setOnFinished(evt->System.exit(0));
 	}
 	
 	
