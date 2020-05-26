@@ -1,3 +1,6 @@
+
+
+
 import javafx.scene.canvas.GraphicsContext;
 
 import java.util.ArrayList;
@@ -5,14 +8,14 @@ import java.util.Iterator;
 import java.util.Random;
 
 public class Salle {
-    private int largeur; // largeur en UNITE
-    private int hauteur; // hauteur en UNITE
-    private int unite;
+    protected int largeur; // largeur en UNITE
+    protected int hauteur; // hauteur en UNITE
+    protected int unite;
     Mur mur;
     Sol sol;
-    private int nbEnnemis;
-    private int nbCoffres;
-    private int[][] quadrillage;
+    Porte porte;
+    
+    protected int[][] quadrillage;
     private ArrayList<Projectile> projectiles;
     private ArrayList<EntiteVivante> ennemis;
     private ArrayList<Item> money;
@@ -20,14 +23,16 @@ public class Salle {
     private ArrayList<Item> cles;
     private ArrayList<Item> coffres;
 
+
     public Salle(int casesHauteur,int caseLargeur ) {
         hauteur = casesHauteur;
         largeur = caseLargeur;
         unite = Variables.Hauteur() / casesHauteur;
         quadrillage = new int[casesHauteur][caseLargeur];
-        creationMatrice();
+       
         mur = new Mur(0,0,unite);
         sol = new Sol(0,0,unite);
+        porte=new Porte(0,0,unite);
         projectiles = new ArrayList<>();
         ennemis = new ArrayList<>();
         money = new ArrayList<>();
@@ -61,7 +66,6 @@ public class Salle {
             }
             }
         }
-    
     public void addArgent(Item i) {
     	money.add(i);
     }
@@ -155,6 +159,7 @@ public class Salle {
     	ennemis.add(e);
     }
     
+    
     public void ennemiesTakingDammage() {
     	if (!(projectiles.isEmpty())) {
     	Iterator<EntiteVivante> i;
@@ -196,13 +201,11 @@ public class Salle {
 
     public void updateProjectiles(){
         if (!(projectiles.isEmpty())){
-        for (Projectile p:projectiles) {
-            updateProjectile(p);
-        }
+        	for (Projectile p:projectiles) {
+        		updateProjectile(p);
+        	}
         }
     }
-    
-    
 
     public void renderProjectiles(GraphicsContext gc){
         if (!(projectiles.isEmpty())) {
@@ -219,7 +222,6 @@ public class Salle {
             }
         }
     }
-    
     public void renderArgent(GraphicsContext gc){
         if (!(money.isEmpty())) {
             for (Item i : money) {
@@ -252,13 +254,12 @@ public class Salle {
         }
     }
 
+    
     public void updateProjectile(Projectile p){
         p.moveToTarget();
         p.move();
         appCols(p);
     }
-    
- 
 
     public int getPosXSalle(int x){
         return (int) Math.floor(x/unite);
@@ -433,7 +434,7 @@ public class Salle {
         int[][] voisins = voisinDe(ed);
 
         if (voisins[0].length ==9){
-        for (int i = 0; i <voisins[0].length ; i++) {
+        for (int i= 0; i <voisins[0].length ; i++) {
             if (quadrillage[voisins[0][i]][voisins[1][i]] == 1) {
                 if (checkcollisionCase(ed, voisins[0][i], voisins[1][i])) {
                     ed.resetpos();
@@ -451,31 +452,18 @@ public class Salle {
         mur.setpos(getPosReelY(i),getPosReelX(j));
         return(mur.intersects(ed));
     }
-
-    private void creationMatrice(){
-        for (int i = 0; i <hauteur ; i++) {
-            for (int j = 0; j <largeur ; j++) {
-                if (i == 0 || j ==0|| i==hauteur-1||j==largeur-1) {
-                    quadrillage[i][j]=1;
-                }
-                else{
-                    quadrillage[i][j] = 0;
-                }
-            }
-        }
-        quadrillage[4][4]=1;
-    }
-
-
     public void dessinerMap(GraphicsContext gc){
         for (int i = 0; i <hauteur ; i++) {
             for (int j = 0; j <largeur ; j++) {
 
-                if (quadrillage[i][j] == 1) {
+                if (quadrillage[j][i] == 1) {
                     gc.drawImage(mur.getImage(), j*unite, i * unite);
                 }
-
-                else {
+                else if (quadrillage[j][i] == 2) {
+                    gc.drawImage(porte.getImage(), j*unite, i * unite);
+                }
+         
+                else if(quadrillage[j][i] == 0) {
                     gc.drawImage(sol.getImage(),j*unite,i*unite);
                 }
             }
@@ -483,8 +471,4 @@ public class Salle {
 
 
     }
-    
-    
 }
-
-
