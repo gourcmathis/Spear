@@ -1,5 +1,6 @@
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.ImageCursor;
@@ -153,22 +154,28 @@ public class FenetreDeJeu {
 
                     }
                 
-	               /* if (squelette.posX<personnage.posX) {
-	                	squelette.setDx(2);
+	               if (salle.squelette1.posX<personnage.posX) {
+	                	salle.squelette1.setDx(2);
 	                }
-	                if (squelette.posX>personnage.posX) {
-	                	squelette.setDx(-2);
+	                if (salle.squelette1.posX>personnage.posX) {
+	                	salle.squelette1.setDx(-2);
 	                }
-	                if (squelette.posY<personnage.posY) {
-	                	squelette.setDy(2);
+	                if (salle.squelette1.posY<personnage.posY) {
+	                	salle.squelette1.setDy(2);
 	                }
-	                if (squelette.posY>personnage.posY) {
-	                	squelette.setDy(-2);
+	                if (salle.squelette1.posY>personnage.posY) {
+	                	salle.squelette1.setDy(-2);
 	                }
-	                squelette.move();*/
+	                salle.squelette1.move();
                     
                     personnage.move();
+                	Random r = new Random();
+				    int n = r.nextInt(5);
+				    if(n==0) {
+				        salle.JoueurTakingDammage(personnage);
+				    }
 
+				    
 
                     //fleche.moveTo((int)cursorX,(int)cursorY);
                     //fleche.move();

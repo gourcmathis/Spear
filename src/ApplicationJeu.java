@@ -9,6 +9,7 @@ public class ApplicationJeu extends Application{
 		theStage.setTitle("Roguelike_game");
 
         theStage=gameMenu.getMainStage();
+        theStage.setResizable(false);
 
        
 		theStage.show();

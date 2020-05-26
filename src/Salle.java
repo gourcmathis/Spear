@@ -7,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
+import com.test.EntiteVivante;
+import com.test.Personnage;
+
 public class Salle {
     protected int largeur; // largeur en UNITE
     protected int hauteur; // hauteur en UNITE
@@ -197,6 +200,33 @@ public class Salle {
     		}
     	}
     }
+    public void JoueurTakingDammage(Personnage personnage) {
+			
+    	Iterator<EntiteVivante> i;
+    	i=ennemis.iterator();
+		if (!(ennemis.isEmpty())) {
+			while(i.hasNext()) {
+				EntiteVivante e = i.next();
+				if (personnage.intersects(e)) {
+					personnage.losepV();
+					//rebond de l'ennemi sur le joueur
+					e.setDx(-15);
+					e.setDy(-15);
+					e.move();
+					personnage.setDx(15);
+					personnage.setDy(15);
+					personnage.move();
+				 
+					
+				}
+			}
+		}
+    
+
+
+
+}
+
 
 
     public void updateProjectiles(){
