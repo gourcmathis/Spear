@@ -286,4 +286,13 @@ public class FenetreDeJeu {
 
 
 	}
+	public void createNewGame(Stage menuStage) {
+		this.menuStage=menuStage;
+		this.menuStage.hide();
+
+		gameStage.show();
+		
+	}
+	
+}
 	
