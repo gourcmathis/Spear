@@ -1,11 +1,11 @@
 import javafx.scene.canvas.GraphicsContext;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
-public class Salle {
+public abstract class Salle {
     protected int largeur; // largeur en UNITE
     protected int hauteur; // hauteur en UNITE
     protected int unite;
@@ -13,17 +13,24 @@ public class Salle {
     Sol sol;
     private int nbEnnemis;
     private int nbCoffres;
-    private AStarGrid<Integer> pathfindinggrid;
+
+    private boolean changeSalle=false;
     Porte porte;
     protected int[][] quadrillage;
-    private ArrayList<Projectile> projectiles;
-    private ArrayList<EntiteVivante> ennemis;
-    private AStarAlgorithm A = new AStarAlgorithm();
-    List<AStarCell> totalPath = new ArrayList<>(200);
-    private ArrayList<Item> money;
-    private ArrayList<Item> potions;
-    private ArrayList<Item> cles;
-    private ArrayList<Item> coffres;
+    protected ArrayList<Projectile> projectiles;
+    protected ArrayList<EntiteVivante> ennemis;
+
+    protected List<AStarCell> totalPath = new ArrayList<>(200);
+    protected AStarGrid<Integer> pathfindinggrid;
+    protected ArrayList<Item> money;
+    protected ArrayList<Item> potions;
+    protected ArrayList<Item> cles;
+    protected ArrayList<Item> coffres;
+    private int entreex;
+    private int entreey;
+    private int sortiex;
+    private int sortiey;
+
 
     public Salle(int casesHauteur,int caseLargeur ) {
         hauteur = casesHauteur;
@@ -41,6 +48,15 @@ public class Salle {
         cles = new ArrayList<>();
         coffres = new ArrayList<>();
         }
+
+
+     public boolean getchange(){
+        if(changeSalle){
+            changeSalle = false;
+            return(!(changeSalle));
+        }
+        return(changeSalle);
+     }
 
     public void addProjectile(Projectile p){
         projectiles.add(p);
@@ -95,14 +111,14 @@ public class Salle {
     }
     
     
-    public void pickupCoffre(Personnage personnage, Cle cle) {
+    public void pickupCoffre(Personnage personnage) {
     	Iterator<Item> i= coffres.iterator();
     	 while(i.hasNext()) {
              Item p = i.next();
              if (p instanceof Coffre) {
                  Coffre coffre = (Coffre) p;   
                  if (coffre.intersects(personnage) & personnage.getNbCle()>=1) {  
-					personnage.removeCle(cle);
+					personnage.removeCle();
                       i.remove();
                       Random r = new Random();
 					  int n = r.nextInt(5);
@@ -271,15 +287,9 @@ public class Salle {
 
     public void updateEnnemi(EntiteVivante ed,int targetX,int targetY){
 
-        int x = getPosXSalle(ed.getPosX());
-        int y = getPosYSalle(ed.getPosY());
-        int movex;
-        int movey;
-
         ed.moveTo(getPosReelX(targetX),getPosReelY(targetY));
-
         ed.move();
-
+        appCols(ed);
 
     }
 
@@ -320,11 +330,11 @@ public class Salle {
             voisinsEntite = new int[2][3];
             voisinsEntite[0][0]=x;
             voisinsEntite[1][0]=y;
-            voisinsEntite[0][2]=0;
-            voisinsEntite[1][2]=1;
+            voisinsEntite[0][1]=0;
+            voisinsEntite[1][1]=1;
 
-            voisinsEntite[0][3]=1;
-            voisinsEntite[1][3]=0;
+            voisinsEntite[0][2]=1;
+            voisinsEntite[1][2]=0;
         }
         else if (x == 0 && y == hauteur - 1) {
             voisinsEntite = new int[2][3];
@@ -471,6 +481,13 @@ public class Salle {
                     ed.resetpos();
                 }
             }
+            if (ed instanceof Personnage){
+            if (quadrillage[voisins[0][i]][voisins[1][i]] == 2){
+                if (checkcollisionCase(ed, voisins[0][i], voisins[1][i])) {
+                changeSalle=true;
+                }
+            }
+            }
         }
         }
         else{
@@ -487,9 +504,8 @@ public class Salle {
 
     public void getPath(int xdeb, int ydeb, int xfin, int yfin) {
         if (xdeb>=0 && xdeb<largeur && xfin>=0 && xfin<largeur && ydeb>=0 && ydeb<hauteur && yfin>=0 && yfin<hauteur){
-            A = new AStarAlgorithm();
-            totalPath.clear();
-            totalPath=A.getPath(pathfindinggrid,pathfindinggrid.getCell(xfin,yfin),pathfindinggrid.getCell(xdeb,ydeb),false);
+            AStarAlgorithm A = new AStarAlgorithm();
+            totalPath=A.getPath(pathfindinggrid,pathfindinggrid.getCell(xfin,yfin),pathfindinggrid.getCell(xdeb,ydeb),false).stream().skip(1).collect(Collectors.toList());
         }
 
     }
@@ -501,28 +517,46 @@ public class Salle {
         System.out.println("__");
         System.out.println("__");
     }
-
-
-    public void dessinerMap(GraphicsContext gc){
+    public void gridprint() {
         for (int i = 0; i <hauteur ; i++) {
             for (int j = 0; j <largeur ; j++) {
+                System.out.print(pathfindinggrid.getCell(j,i).getObject());
+            }
+            System.out.println();
 
+        }
+    }
+    public void creergrid() {
+        pathfindinggrid=new AStarGrid<>(largeur,hauteur);
+        for (int i = 0; i < hauteur; i++) {
+            for (int j = 0; j < largeur; j++) {
+                if (quadrillage[j][i] == 0 || quadrillage[j][i]==2) {
+                    pathfindinggrid.setCell(Integer.valueOf(quadrillage[j][i]), j, i, true);
+                }
                 if (quadrillage[j][i] == 1) {
-                    gc.drawImage(mur.getImage(), j*unite, i * unite);
+                    pathfindinggrid.setCell(Integer.valueOf(1), j, i, false);
                 }
-                else if (quadrillage[j][i] == 2) {
-                    gc.drawImage(porte.getImage(), j*unite, i * unite);
-                }
-
-                else if(quadrillage[j][i] == 0) {
-                    gc.drawImage(sol.getImage(),j*unite,i*unite);
-                }
+            }
             }
         }
 
+        public void dessinerMap(GraphicsContext gc){
+            for (int i = 0; i < hauteur; i++) {
+                for (int j = 0; j < largeur; j++) {
 
-    }
-    
+                    if (quadrillage[j][i] == 1) {
+                        gc.drawImage(mur.getImage(), j * unite, i * unite);
+                    } else if (quadrillage[j][i] == 2) {
+                        gc.drawImage(porte.getImage(), j * unite, i * unite);
+                    } else if (quadrillage[j][i] == 0) {
+                        gc.drawImage(sol.getImage(), j * unite, i * unite);
+                    }
+                }
+            }
+
+
+        }
+
     
 }
 

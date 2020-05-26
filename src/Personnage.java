@@ -20,7 +20,11 @@ public class Personnage extends EntiteVivante {
        
 
     }
-    
+    public void teleport(int x, int y){
+        posX=x;
+        posY=y;
+    }
+
     public void addArgent(Argent argent){
         argents.add(argent);
     }
@@ -34,8 +38,8 @@ public class Personnage extends EntiteVivante {
     public int getNbCle(){
         return(cles.size());
     }
-    public void removeCle(Cle cle) {
-    	cles.remove(cle);
+    public void removeCle() {
+    	cles.remove(0);
     }
 
     public void addFleche(Fleche fleche){
