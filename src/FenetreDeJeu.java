@@ -1,5 +1,3 @@
-
-import java.util.ArrayList;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -40,9 +38,10 @@ public class FenetreDeJeu {
 	private double cursorY=hauteur/2;
 	private boolean pause;
 	private PauseMenu pauseMenu;
+	private Context context;
 
 
-
+	
 	public FenetreDeJeu() {
 		initializeStage();
 
@@ -58,6 +57,7 @@ public class FenetreDeJeu {
 		gameStage=new Stage();
 		gameStage.setScene(gameScene);
 		canvas = new Canvas(1024,1024);
+
 
         GraphicsContext gc = canvas.getGraphicsContext2D();
         Personnage personnage = new Personnage(largeur/2,hauteur/2,72);
@@ -82,12 +82,15 @@ public class FenetreDeJeu {
 		text.setFill(Color.WHITE);
 		text.setTranslateX(800);
 		text.setTranslateY(990);
-
 		pauseMenu.setVisible(false);
+		context=new Context();
+		pause=true;
+		ath1.setVisible(false);
+		text.setVisible(false);
 
 
 		gameStage.setTitle("Roguelike_game_Jeu");
-		gamePane.getChildren().addAll(canvas,ath1,pauseMenu,text);
+		gamePane.getChildren().addAll(canvas,ath1,pauseMenu,text,context);
 		gameStage.setResizable(false);
 
 
@@ -113,7 +116,7 @@ public class FenetreDeJeu {
         });
 
 
-
+      
 	        gameScene.setOnMouseClicked(
 	                e -> {
 	                    cursorX=e.getX();
@@ -134,6 +137,9 @@ public class FenetreDeJeu {
         new AnimationTimer() {
             public void handle(long currentNanoTime)
             {
+            	if(context.isVisible()==true) {
+            		stop();
+            	}
                 //A CORRIGER : Vitesse du perso, il faut
                 // game logic
                 current_time = System.nanoTime();
@@ -148,7 +154,7 @@ public class FenetreDeJeu {
                     ath1.setargent(personnage.getNbArgent());
                     ath1.setpv(personnage.getpV());
                     ath1.setcle(personnage.getNbCle());
-
+                    //System.out.println(salle.getPosXSalle(personnage.getPosX()));
                     personnage.setDx(0);
                     personnage.setDy(0);
 
@@ -169,22 +175,21 @@ public class FenetreDeJeu {
 
                     }
 
-                    
                     personnage.move();
 
 
-
-
-
-                    m.updateSalle();
-
-                    m.changementSalle(m.getSalleCourante().getchange(),canvas);
-
                     acc_time = 0;
                 }
+           
 
-                m.renderSalle(gc);
-                personnage.render(gc);
+
+
+                //gc.clearRect(0,0,largeur,hauteur);
+                //gc.drawImage(sol,0,0);
+				m.renderSalle(gc);
+				personnage.render(gc);
+
+
 
 
                 ///////////////////PAUSE////////////////////////////////////:
@@ -196,8 +201,8 @@ public class FenetreDeJeu {
       					text.setVisible(false);
 
       			}
-
-
+        
+                
                pauseMenu.getBtnJouer().setOnMouseClicked(event->{
       				FadeTransition ft=new FadeTransition(Duration.seconds(0.4),gamePane);
       				ft.setFromValue(1);
@@ -207,26 +212,43 @@ public class FenetreDeJeu {
       					pauseMenu.setVisible(false);
       					ath1.setVisible(true);
       					pause=false;
-
-
+    
+      					
       				});
-
+      				
       				ft.play();
 
-
+    				
     			});
+               context.getBtnExit().setOnMouseClicked(event->{
+     					start();
+     					ath1.setVisible(true);
+     					context.setVisible(false);
+     					pause=false;
+     					ath1.setVisible(true);
+     					text.setVisible(true);
+
+   			  });
+
 
 
 
             }}.start();
+         
+            
+          
 
 
 
 	}
 	
+
+         
+	
 	public void createNewGame(Stage menuStage) {
 		this.menuStage=menuStage;
 		this.menuStage.hide();
+
 		gameStage.show();
 		
 	}
