@@ -1,9 +1,23 @@
+
+
+
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
+
+import javafx.scene.shape.Rectangle;
+
+
+
+
 
 public abstract class Salle {
     protected int largeur; // largeur en UNITE
@@ -16,6 +30,7 @@ public abstract class Salle {
 
     private boolean changeSalle=false;
     Porte porte;
+    
     protected int[][] quadrillage;
     protected ArrayList<Projectile> projectiles;
     protected ArrayList<EntiteVivante> ennemis;
@@ -37,7 +52,7 @@ public abstract class Salle {
         largeur = caseLargeur;
         unite = Variables.Hauteur() / casesHauteur;
         quadrillage = new int[casesHauteur][caseLargeur];
-
+       
         mur = new Mur(0,0,unite);
         sol = new Sol(0,0,unite);
         porte=new Porte(0,0,unite);
@@ -83,7 +98,6 @@ public abstract class Salle {
             }
             }
         }
-    
     public void addArgent(Item i) {
     	money.add(i);
     }
@@ -177,6 +191,7 @@ public abstract class Salle {
     	ennemis.add(e);
     }
     
+    
     public void ennemiesTakingDammage() {
     	if (!(projectiles.isEmpty())) {
     	Iterator<EntiteVivante> i;
@@ -217,15 +232,50 @@ public abstract class Salle {
     }
 
 
+
+    public void JoueurTakingDammage(Personnage personnage) {
+
+    	Iterator<EntiteVivante> i;
+    	i=ennemis.iterator();
+		if (!(ennemis.isEmpty())) {
+			while(i.hasNext()) {
+				EntiteVivante e = i.next();
+				if (personnage.intersects(e)) {
+					personnage.losepV();
+					//rebond de l'ennemi sur le joueur
+					e.setDx(-15);
+					e.setDy(-15);
+					e.move();
+					personnage.setDx(15);
+					personnage.setDy(15);
+					personnage.move();
+					if (personnage.pV == 0) {
+						GameOver gameOver=new GameOver();
+						Stage window = new Stage();
+						window = gameOver.getMainStage();
+						window.show();
+
+					}
+
+
+				}
+			}
+		}
+
+
+
+
+}
+
+
+
     public void updateProjectiles(){
         if (!(projectiles.isEmpty())){
-        for (Projectile p:projectiles) {
-            updateProjectile(p);
-        }
+        	for (Projectile p:projectiles) {
+        		updateProjectile(p);
+        	}
         }
     }
-    
-    
 
     public void renderProjectiles(GraphicsContext gc){
         if (!(projectiles.isEmpty())) {
@@ -242,7 +292,6 @@ public abstract class Salle {
             }
         }
     }
-    
     public void renderArgent(GraphicsContext gc){
         if (!(money.isEmpty())) {
             for (Item i : money) {
@@ -300,8 +349,6 @@ public abstract class Salle {
         p.move();
         appCols(p);
     }
-    
- 
 
     public int getPosXSalle(int x){
         return (x/unite);
@@ -558,9 +605,5 @@ public abstract class Salle {
             }
 
 
-        }
-
-    
+    }
 }
-
-
