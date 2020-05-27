@@ -29,7 +29,9 @@ public abstract class Salle {
     private int nbCoffres;
 
     private boolean changeSalle=false;
-    Porte porte;
+    private Porte porte;
+    private Porte porte2;
+    private Porte[] portes;
     
     protected int[][] quadrillage;
     protected ArrayList<Projectile> projectiles;
@@ -47,7 +49,7 @@ public abstract class Salle {
     private int sortiey;
 
 
-    public Salle(int casesHauteur,int caseLargeur ) {
+    public Salle(int casesHauteur,int caseLargeur ,int entreex,int entreey, int sortiex, int sortiey) {
         hauteur = casesHauteur;
         largeur = caseLargeur;
         unite = Variables.Hauteur() / casesHauteur;
@@ -56,16 +58,41 @@ public abstract class Salle {
         mur = new Mur(0,0,unite);
         sol = new Sol(0,0,unite);
         porte=new Porte(0,0,unite);
+        porte2=new Porte(0,0,unite);
+
+        portes =new Porte[2];
+        portes[0]=porte;
+        portes[1]=porte2;
+
         projectiles = new ArrayList<>();
         ennemis = new ArrayList<>();
         money = new ArrayList<>();
         potions = new ArrayList<>();
         cles = new ArrayList<>();
         coffres = new ArrayList<>();
+        this.entreex=entreex;
+        this.entreey=entreey;
+        this.sortiex=sortiex;
+        this.sortiey=sortiey;
         }
 
+    public int getEntreey() {
+        return entreey;
+    }
 
-     public boolean getchange(){
+    public int getEntreex() {
+        return entreex;
+    }
+
+    public int getSortiex() {
+        return sortiex;
+    }
+
+    public int getSortiey() {
+        return sortiey;
+    }
+
+    public boolean getchange(){
         if(changeSalle){
             changeSalle = false;
             return(!(changeSalle));
@@ -523,7 +550,7 @@ public abstract class Salle {
     
     public void appCols(EntiteDynamique ed){
         int[][] voisins = voisinDe(ed);
-
+        int k =0;
         if (voisins[0].length ==9){
         for (int i = 0; i <voisins[0].length ; i++) {
             if (quadrillage[voisins[0][i]][voisins[1][i]] == 1) {
@@ -535,7 +562,8 @@ public abstract class Salle {
             if (quadrillage[voisins[0][i]][voisins[1][i]] == 2){
                 if (checkcollisionCase(ed, voisins[0][i], voisins[1][i])) {
                 changeSalle=true;
-                porte.setouvrir(unite);
+                portes[k].setouvrir(unite);
+                k++;
                 }
             }
             }
@@ -592,16 +620,18 @@ public abstract class Salle {
         }
 
         public void dessinerMap(GraphicsContext gc){
-            for (int i = 0; i < hauteur; i++) {
+        int k = 0;
+        for (int i = 0; i < hauteur; i++) {
                 for (int j = 0; j < largeur; j++) {
 
                     if (quadrillage[j][i] == 1) {
                         gc.drawImage(mur.getImage(), j * unite, i * unite);
                     } else if (quadrillage[j][i] == 2) {
-
-                        gc.drawImage(porte.getImage(), j * unite, i * unite);
+                        gc.drawImage(portes[k].getImage(), j * unite, i * unite);
+                        k++;
                     } else if (quadrillage[j][i] == 0) {
                         gc.drawImage(sol.getImage(), j * unite, i * unite);
+
                     }
                 }
             }

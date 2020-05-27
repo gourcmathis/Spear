@@ -59,7 +59,7 @@ public class MapdeJeu {
         if (changement){
             indiceCourant=(indiceCourant+1)%5;
             salleCourante=listeSalles.get(indiceCourant);
-            teleport(salleCourante.getPosReelX(1),salleCourante.getPosReelY(1));
+            teleport(salleCourante.getEntreex(),salleCourante.getEntreey());
         }
     }
 
