@@ -1,6 +1,8 @@
 import java.util.ArrayList;
 import java.util.Random;
 
+import com.test.GameOver;
+
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
@@ -212,6 +214,7 @@ public class FenetreDeJeu {
       					pauseMenu.setVisible(false);
       					ath1.setVisible(true);
       					pause=false;
+    					text.setVisible(true);
     
       					
       				});
@@ -225,10 +228,24 @@ public class FenetreDeJeu {
      					ath1.setVisible(true);
      					context.setVisible(false);
      					pause=false;
-     					ath1.setVisible(true);
+     	
      					text.setVisible(true);
 
    			  });
+   ////////////GAMEOVER///////////////////////////////////////////////
+   				if (personnage.pV == 0) {
+   					GameOver gameOver=new GameOver();
+   					Stage window = new Stage();
+   					stop();
+   					window = gameOver.getMainStage();
+   					gameStage.hide();
+   					window.show();
+   				
+
+   				}
+
+
+
 
 
 
