@@ -82,6 +82,10 @@ public class GameMenu extends Parent {
   				ft.setOnFinished(evt->{
   					FenetreDeJeu fenetredeJeu=new FenetreDeJeu();
   					fenetredeJeu.createNewGame(mainStage);
+  					String filepath = "assets/background.wav";
+  					Audio musicObject = new Audio();
+  					
+  					musicObject.playMusic(filepath);
   					
   				});
   				ft.play();
