@@ -27,7 +27,7 @@ public class Context extends Parent{
 		text.setTranslateX(162);
 		text.setTranslateY(310);
 
-		Text text2=new  Text("De nombreux dangers vous entourent, allez vous reussir a sortir en vie ? Heuresement, un arc et trois fleches se trouvent a cote de vous. Faites en bon usage !");
+		Text text2=new  Text("De nombreux dangers vous entourent, allez vous reussir a sortir en vie ? Heuresement, trois lances se trouvent a cote de vous. Faites en bon usage !");
 		text2.setFont(Font.loadFont("file:assets/masoneer.ttf", 23));
 		text2.setFill(Color.WHITE);
 		text2.setWrappingWidth(700);

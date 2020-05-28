@@ -92,7 +92,7 @@ public class FenetreDeJeu {
 		text.setVisible(false);
 
 
-		gameStage.setTitle("Roguelike_game_Jeu");
+		gameStage.setTitle("Spear");
 		gamePane.getChildren().addAll(canvas,ath1,pauseMenu,text,context);
 		gameStage.setResizable(false);
 
