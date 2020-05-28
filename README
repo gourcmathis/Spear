@@ -1,0 +1,32 @@
+# Spear
+
+Spear est un jeu réalisé en Java par quatre étudiants dans le cadre d'un projet de deux semaines.
+
+## Interface graphique
+
+Entièremet conçue grâce à JavaFX.
+
+## Comment jouer ?
+
+Executez le .JAR 
+
+## But du jeu
+
+C'est tout simple ! Obtenez 50 pièces en tuant des ennemis ou en ouvrant des coffres.
+Mais gardez un oeil sur vos points de vie !
+
+## Commandes
+
+Z : aller en haut
+Q : aller à gauche
+S : aller en bas
+D : aller à droite
+
+-Visez avec la souris et clique gauche pour tirer un projectile
+-Échap pour mettre le jeu en pause
+
+## Droits d'auteur
+
+Chaque image, musique et son sont libres de droit.
+
+ 

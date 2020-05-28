@@ -37,10 +37,10 @@ public class GameMenu extends Parent {
 			mainScene=new Scene(root,1024,1024);
 			mainStage=new Stage();
 			mainStage.setScene(mainScene);
-			mainStage.setTitle("Roguelike_game_Menu");
+			mainStage.setTitle("Spear");
 			BackgroundImage BI=new BackgroundImage(new Image("file:assets/main-background.jpg"),BackgroundRepeat.REPEAT , BackgroundRepeat.NO_REPEAT , BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 			root.setBackground(new Background(BI));
-			Text titre=new  Text("MENU");
+			Text titre=new  Text("SPEAR");
 			titre.setFont(Font.loadFont("file:assets/masoneer.ttf", 90));
   			titre.setFill(Color.WHITE);
   			titre.setTranslateX(380);
@@ -82,6 +82,10 @@ public class GameMenu extends Parent {
   				ft.setOnFinished(evt->{
   					FenetreDeJeu fenetredeJeu=new FenetreDeJeu();
   					fenetredeJeu.createNewGame(mainStage);
+  					String filepath = "assets/background.wav";
+  					Audio musicObject = new Audio();
+  					
+  					musicObject.playMusic(filepath);
   					
   				});
   				ft.play();

@@ -20,14 +20,14 @@ public class Context extends Parent{
 		Rectangle arriere2=new Rectangle(1024,1024);
 		arriere2.setFill(Color.DARKGREY);
 		arriere2.setOpacity(0.8);
-		Text text=new  Text("Vous vous reveillez sur un sol froid et humide avec comme une l'impression d'avoir deja vecu cela ... ");
+		Text text=new  Text("Vous vous reveillez sur un sol froid et humide avec comme l'impression d'avoir deja vecu cela ... ");
 		text.setFont(Font.loadFont("file:assets/masoneer.ttf", 23));
 		text.setFill(Color.WHITE);
 		text.setWrappingWidth(700);
 		text.setTranslateX(162);
 		text.setTranslateY(310);
 
-		Text text2=new  Text("De nombreux danger vous entourent, allez vous reussir a sortir en vie ? Heuresement un arc  et trois fleches se trouvent a cote de vous. Faites en bon usage !");
+		Text text2=new  Text("De nombreux dangers vous entourent, allez vous reussir a sortir en vie ? Heuresement, trois lances se trouvent a cote de vous. Faites en bon usage !");
 		text2.setFont(Font.loadFont("file:assets/masoneer.ttf", 23));
 		text2.setFill(Color.WHITE);
 		text2.setWrappingWidth(700);

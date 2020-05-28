@@ -120,6 +120,9 @@ public abstract class Salle {
                         if (fleche.intersects(personnage)) {
                             personnage.addFleche(fleche);
                             i.remove();
+                            String filepath = "assets/pickupFleche.wav";
+               			    Audio musicObject = new Audio();
+               			    musicObject.playArrow(filepath);
                         }
                     }
                 }
@@ -139,6 +142,9 @@ public abstract class Salle {
                  Argent argent = (Argent) p;   
                  if (argent.intersects(personnage)) {
                       personnage.addArgent(argent);
+                      String filepath = "assets/argent.wav";
+          			  Audio musicObject = new Audio();
+          			  musicObject.playSong(filepath);
                       i.remove();
                      
                  }
@@ -161,6 +167,9 @@ public abstract class Salle {
                  Coffre coffre = (Coffre) p;   
                  if (coffre.intersects(personnage) & personnage.getNbCle()>=1) {  
 					personnage.removeCle();
+					String filepath = "assets/coffre.wav";
+					Audio musicObject = new Audio();
+					musicObject.playSong(filepath);
                       i.remove();
                       Random r = new Random();
 					  int n = r.nextInt(5);
@@ -186,6 +195,9 @@ public abstract class Salle {
              if (p instanceof Cle) {
                  Cle cle = (Cle) p;   
                  if (cle.intersects(personnage)) {
+                	  String filepath = "assets/cle.wav";
+         			  Audio musicObject = new Audio();
+         			  musicObject.playSong(filepath);
                       personnage.addCle(cle);
                       i.remove();
                      
@@ -207,6 +219,9 @@ public abstract class Salle {
              if (p instanceof Potion) {
                  Potion potion = (Potion) p;   
                  if (potion.intersects(personnage) & personnage.pV<3) {
+                	 String filepath = "assets/potion.wav";
+         			 Audio musicObject = new Audio();
+         			 musicObject.playSong(filepath);
                       personnage.pV++;
                       i.remove();
                      
@@ -235,6 +250,9 @@ public abstract class Salle {
                         e.losepV();
                         if (e.getpV() == 0) {
                             i.remove();
+                            String filepath = "assets/ennemiMort.wav";
+                			Audio musicObject = new Audio();
+                			musicObject.playSong(filepath);
                             Argent argent = new Argent(e.lastposX, e.lastposY, "file:assets/Argent.png", 40);
                             addArgent(argent);
                             Random r = new Random();
@@ -270,6 +288,9 @@ public abstract class Salle {
 				EntiteVivante e = i.next();
 				if (personnage.intersects(e)) {
 					personnage.losepV();
+					String filepath = "assets/degatJoueur.wav";
+					Audio musicObject = new Audio();
+					musicObject.playSong(filepath);
 					//rebond de l'ennemi sur le joueur
 					e.setDx(-15);
 					e.setDy(-15);
@@ -279,13 +300,7 @@ public abstract class Salle {
 					personnage.setDy(15);
 					personnage.move();
 					appCols(personnage);
-					if (personnage.pV == 0) {
-						//GameOver gameOver=new GameOver();
-						//Stage window = new Stage();
-						//window = gameOver.getMainStage();
-						//window.show();
-
-					}
+			
 
 
 				}
