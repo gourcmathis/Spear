@@ -45,6 +45,7 @@ public class FenetreDeJeu {
 
 	
 	public FenetreDeJeu() {
+		
 		initializeStage();
 
 
