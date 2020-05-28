@@ -236,8 +236,8 @@ public abstract class Salle {
              //si p est une potion
              if (p instanceof Potion) {
                  Potion potion = (Potion) p;  
-                 //si le personnage est sur une potion et qu'il a moins de 3 pv
-                 if (potion.intersects(personnage) & personnage.pV<3) {
+                 //si le personnage est sur une potion et qu'il a moins de 5 pv
+                 if (potion.intersects(personnage) & personnage.pV<5) {
                 	 //on fait un bruit
                 	/* String filepath = "assets/potion.wav";
          			 Audio musicObject = new Audio();
@@ -338,12 +338,12 @@ public abstract class Salle {
 					Audio musicObject = new Audio();
 					musicObject.playSong(filepath);*/
 					//rebond de l'ennemi sur le joueur
-					e.setDx(-15);
-					e.setDy(-15);
+					e.setDx(-5);
+					e.setDy(-5);
 					e.move();
 					appCols(e);
-					personnage.setDx(15);
-					personnage.setDy(15);
+					personnage.setDx(3);
+					personnage.setDy(3);
 					personnage.move();
 					appCols(personnage);
 			
