@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.test.GameOver;
+
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
