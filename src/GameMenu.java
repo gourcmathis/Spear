@@ -33,13 +33,20 @@ public class GameMenu extends Parent {
 
 	
 	public GameMenu() {
+			//Box elements verticale
 			root=new VBox(30);
+			
+			//Fenetre contenant le menu principale
 			mainScene=new Scene(root,1024,1024);
 			mainStage=new Stage();
 			mainStage.setScene(mainScene);
 			mainStage.setTitle("Spear");
+			
+			//Image de fond
 			BackgroundImage BI=new BackgroundImage(new Image("file:assets/main-background.jpg"),BackgroundRepeat.REPEAT , BackgroundRepeat.NO_REPEAT , BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 			root.setBackground(new Background(BI));
+			
+			//Titre
 			Text titre=new  Text("SPEAR");
 			titre.setFont(Font.loadFont("file:assets/masoneer.ttf", 90));
   			titre.setFill(Color.WHITE);
@@ -66,25 +73,27 @@ public class GameMenu extends Parent {
   			creditText.setTranslateX(180);
   			creditText.setTranslateY(-880);
   			creditText.setVisible(false);
+  			//revenir a la au menu
 			CreditButton btnRetourCredit=new CreditButton("Retour");
 			btnRetourCredit.setVisible(false);
-			////////////////////////////////////////////////
+			///////////////////////////////////////////////////////////////
   			
 
-			
+			//Creation du bouton
 			MenuButton btnJouer=new MenuButton("Jouer");
+			//Evenement lorsque l'utilisateur clique sur "Jouer"
 			btnJouer.setOnMouseClicked(event->{
-				//FenetreDeJeu fenetredeJeu=new FenetreDeJeu();
-				//fenetredeJeu.createNewGame(mainStage);
+				//Transition 
 				FadeTransition ft=new FadeTransition(Duration.seconds(0.75),root);
   				ft.setFromValue(1);
   				ft.setToValue(0);
   				ft.setOnFinished(evt->{
+  					//creation d'une nouvelle fenetre  de jeu
   					FenetreDeJeu fenetredeJeu=new FenetreDeJeu();
   					fenetredeJeu.createNewGame(mainStage);
+  					//Audio
   					String filepath = "assets/background.wav";
   					Audio musicObject = new Audio();
-  					
   					musicObject.playMusic(filepath);
   					
   				});
@@ -94,24 +103,29 @@ public class GameMenu extends Parent {
 				
   				
   			});
-	
+			
+			//Creation du bouton
 			MenuButton btnQuitter=new MenuButton("Quitter");
+			//Evenement lorsque l'utilisateur clique sur "Quitter"
 			btnQuitter.setOnMouseClicked(event->{
   				FadeTransition ft=new FadeTransition(Duration.seconds(0.75),root);
   				ft.setFromValue(1);
   				ft.setToValue(0.5);
+  				//Fermeture de la fenetre
   				ft.setOnFinished(evt->System.exit(0));
   				ft.play();
 
 				
 			});
 			
-			
+			//Creation du bouton
 			MenuButton btnCredit=new MenuButton("Credit");
+			//Evenement lorsque l'utilisateur clique sur "Credit"
 			btnCredit.setOnMouseClicked(event->{
   				FadeTransition ft=new FadeTransition(Duration.seconds(0.75),root);
   				ft.setFromValue(1);
   				ft.setToValue(1);
+  				//Affichage de la case contenant les credits et effacement du reste 
   				ft.setOnFinished(evt->{
   					credit.setVisible(true);
   					btnJouer.setVisible(false);
@@ -127,10 +141,12 @@ public class GameMenu extends Parent {
   				
   			});
 			
-			btnRetourCredit.setOnMouseClicked(event->{
+			//Evenement lorsque l'utilisateur clique sur "retour"
+			 btnRetourCredit.setOnMouseClicked(event->{
   				FadeTransition ft=new FadeTransition(Duration.seconds(0.75),root);
   				ft.setFromValue(1);
   				ft.setToValue(1);
+  				//On efface les credits et on fait apparaitre le menu
   				ft.setOnFinished(evt->{
   					credit.setVisible(false);
   					btnJouer.setVisible(true);
@@ -159,7 +175,7 @@ public class GameMenu extends Parent {
 			root.getChildren().addAll(titre, btnJouer,btnQuitter,btnCredit,credit,btnRetourCredit,creditTitre,creditText);
 	}
 	
-	
+	//Boutons
 	private static class MenuButton extends StackPane{
   		private Text text;
   		

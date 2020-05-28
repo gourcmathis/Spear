@@ -2,7 +2,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 
-
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
 import javafx.event.EventHandler;
@@ -77,14 +76,21 @@ public class FenetreDeJeu {
 
 
 
+        //Affichage ecran
 		ath1=new Ath(personnage);
-		ath1.setTranslateX(160);
+		ath1.setTranslateX(180);
 		pauseMenu=new PauseMenu();
 		Text text=new  Text("Press esc to pause");
 		text.setFont(Font.loadFont("file:assets/masoneer.ttf", 15));
 		text.setFill(Color.WHITE);
 		text.setTranslateX(800);
-		text.setTranslateY(990);
+		text.setTranslateY(1000);
+		Text titre=new  Text("SPEAR");
+		titre.setFont(Font.loadFont("file:assets/masoneer.ttf", 60));
+		titre.setFill(Color.WHITE);
+		titre.setTranslateX(385);
+		titre.setTranslateY(1020);
+		titre.setOpacity(0.5);
 		pauseMenu.setVisible(false);
 		context=new Context();
 		pause=true;
@@ -93,7 +99,7 @@ public class FenetreDeJeu {
 
 
 		gameStage.setTitle("Spear");
-		gamePane.getChildren().addAll(canvas,ath1,pauseMenu,text,context);
+		gamePane.getChildren().addAll(canvas,ath1,pauseMenu,text,titre,context);
 		gameStage.setResizable(false);
 
 
@@ -153,6 +159,9 @@ public class FenetreDeJeu {
 
 
                 if (acc_time >=10) {
+                //Perte de pv entre un lapse de temps specifique
+              	  m.setTmp(m.getTmp()+1);
+
 
                     ath1.setfleche(personnage.getNbFleches());
                     ath1.setargent(personnage.getNbArgent());
@@ -235,7 +244,7 @@ public class FenetreDeJeu {
 
    			  });
    ////////////GAMEOVER///////////////////////////////////////////////
-   			/*	if (personnage.pV == 0) {
+   				/*if (personnage.pV == 0) {
    					GameOver gameOver=new GameOver();
    					Stage window = new Stage();
    					stop();

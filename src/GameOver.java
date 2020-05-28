@@ -21,6 +21,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+//gere le cas où le joueur a perdu
 public class GameOver extends Parent {
 	private GameOver gameOver;
 
@@ -34,14 +35,10 @@ public class GameOver extends Parent {
 	
 	public GameOver() {
 			root=new VBox(30);
-			 Rectangle rect = new Rectangle (100, 40, 100, 100);
-		     rect.setArcHeight(50);
-		     rect.setArcWidth(50);
-		     rect.setFill(Color.VIOLET);
 			mainScene=new Scene(root,1024,1024);
 			mainStage=new Stage();
 			mainStage.setScene(mainScene);
-			mainStage.setTitle("Roguelike_game_Menu");
+			mainStage.setTitle("Spear");
 			BackgroundImage BI=new BackgroundImage(new Image("file:assets/main-background.jpg"),BackgroundRepeat.REPEAT , BackgroundRepeat.NO_REPEAT , BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
 			root.setBackground(new Background(BI));
 			
@@ -57,7 +54,7 @@ public class GameOver extends Parent {
 				ft.setFromValue(1);
 				ft.setToValue(0);
 				ft.play();
-				//ft.setOnFinished(evt->System.exit(0));
+				ft.setOnFinished(evt->System.exit(0));
 	}
 	
 	

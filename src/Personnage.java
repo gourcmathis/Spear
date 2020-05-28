@@ -8,7 +8,7 @@ public class Personnage extends EntiteVivante {
     private ArrayList<Cle> cles;
     public Personnage(int x, int y,int pixelImage)
     {
-        super(x, y, 2, "file:assets/Joueur.png",pixelImage, new String[]{"file:assets/Prun1.png", "file:assets/Prun2.png","file:assets/Prun3.png","file:assets/Prun4.png"});
+        super(x, y, 5, "file:assets/Joueur.png",pixelImage, new String[]{"file:assets/Prun1.png", "file:assets/Prun2.png","file:assets/Prun3.png","file:assets/Prun4.png"});
         fleches = new ArrayList<>();
         argents = new ArrayList<>();
         cles = new ArrayList<>();
@@ -61,9 +61,9 @@ public class Personnage extends EntiteVivante {
             fleche.acquireTarget(x, y);
             fleches.remove(fleche);
             salle.addProjectile(fleche);
-            String filepath = "assets/fleche.wav";
+           /* String filepath = "assets/fleche.wav";
 			Audio musicObject = new Audio();
-			musicObject.playSong(filepath);
+			musicObject.playSong(filepath);*/
         }
     }
 

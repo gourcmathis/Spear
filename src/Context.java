@@ -12,14 +12,18 @@ import javafx.scene.text.Text;
 public class Context extends Parent{
 	private static VBox root;
 	private ContextButton btnExit;
+	
+	
 	public Context() {
-		Shadow shadow=new Shadow();
+		//Box contenant les elements les uns a la suite des autre de maniere verticale
 		root=new VBox(15);
 	
-
+		//Arriere noir
 		Rectangle arriere2=new Rectangle(1024,1024);
 		arriere2.setFill(Color.DARKGREY);
 		arriere2.setOpacity(0.8);
+		
+		//Paragraphe de texte
 		Text text=new  Text("Vous vous reveillez sur un sol froid et humide avec comme l'impression d'avoir deja vecu cela ... ");
 		text.setFont(Font.loadFont("file:assets/masoneer.ttf", 23));
 		text.setFill(Color.WHITE);
@@ -33,7 +37,9 @@ public class Context extends Parent{
 		text2.setWrappingWidth(700);
 		text2.setTranslateX(162);
 		text2.setTranslateY(325);
-
+		
+		
+		//Fenetre de jeu foncé en transparence
 		Rectangle arriere=new Rectangle(800,550);
 		arriere.setFill(Color.BLACK);
 		arriere.setTranslateX(100);
@@ -43,7 +49,7 @@ public class Context extends Parent{
 
 
 
-	
+		//Bouton pour lancer le jeu apres que l'utilisateur ai lu le contexte
 	    btnExit=new ContextButton("Commencer");
 		getBtnExit().setTranslateX(162);
 		getBtnExit().setTranslateY(400);

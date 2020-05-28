@@ -11,6 +11,8 @@ public class MapdeJeu {
     private ArrayList<Salle> listeSalles;
     private int indiceCourant;
     private Personnage joueur;
+    private double tmp;
+
 
     public MapdeJeu(int hauteur,int largeur,Personnage personnage){
         listeSalles = new ArrayList<>();
@@ -39,12 +41,12 @@ public class MapdeJeu {
         salleCourante.ennemiesTakingDammage();
         salleCourante.updateEnnemis(joueur);
 
-        Random r = new Random();
-        int n = r.nextInt(5);
-        if(n==0) {
+        //Lapse de temps entre deux perte de Pv
+        if(tmp%25==0) {
             salleCourante.JoueurTakingDammage(joueur);
         }
-        salleCourante.JoueurTakingDammage(joueur);
+       
+       
     }
     public void renderSalle(GraphicsContext gc){
         salleCourante.dessinerMap(gc);
