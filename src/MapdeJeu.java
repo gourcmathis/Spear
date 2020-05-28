@@ -48,6 +48,12 @@ public class MapdeJeu {
        
        
     }
+    public double getTmp() {
+    	return this.tmp;
+    }
+    public void setTmp(double autreTmp) {
+    	this.tmp=autreTmp;
+    }
     public void renderSalle(GraphicsContext gc){
         salleCourante.dessinerMap(gc);
         salleCourante.renderProjectiles(gc);
