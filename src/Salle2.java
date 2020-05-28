@@ -13,8 +13,9 @@ public class Salle2 extends Salle{
     Potion potion = new Potion(700,800,"file:assets/Potion.png",30);
     Cle cle = new Cle(200,800,"file:assets/Cle.png",56);
     public Salle2(int casesHauteur, int caseLargeur) {
-		super(casesHauteur, caseLargeur,164,128,32,32);
+		super(casesHauteur, caseLargeur,164,128,128,128);
 		creationMatrice();
+		placePorte();
 	    addEnnemi(squelette1);
 	    addEnnemi(squelette2);
 	    addEnnemi(araignee1);

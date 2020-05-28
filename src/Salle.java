@@ -29,6 +29,7 @@ public abstract class Salle {
     private int nbCoffres;
 
     private boolean changeSalle=false;
+    private int directionSortie=0;
     private Porte porte;
     private Porte porte2;
     private Porte[] portes;
@@ -550,7 +551,7 @@ public abstract class Salle {
     
     public void appCols(EntiteDynamique ed){
         int[][] voisins = voisinDe(ed);
-        int k =0;
+
         if (voisins[0].length ==9){
         for (int i = 0; i <voisins[0].length ; i++) {
             if (quadrillage[voisins[0][i]][voisins[1][i]] == 1) {
@@ -560,11 +561,8 @@ public abstract class Salle {
             }
             if (ed instanceof Personnage){
             if (quadrillage[voisins[0][i]][voisins[1][i]] == 2){
-                if (checkcollisionCase(ed, voisins[0][i], voisins[1][i])) {
-                changeSalle=true;
-                portes[k].setouvrir(unite);
-                k++;
-                }
+                checkcollisionPorte(ed);
+
             }
             }
         }
@@ -578,6 +576,41 @@ public abstract class Salle {
     public boolean checkcollisionCase(EntiteDynamique ed,int i, int j){
         mur.setpos(getPosReelY(i),getPosReelX(j));
         return(mur.intersects(ed));
+    }
+    protected void placePorte(){
+        int k=0;
+        for (int i = 0; i <hauteur ; i++) {
+            for (int j = 0; j <largeur ; j++) {
+                if (quadrillage[i][j] == 2) {
+                    portes[k].setpos(getPosReelY(i),getPosReelX(j));
+
+                    k++;
+                }
+            }
+        }
+    }
+    public void checkcollisionPorte(EntiteDynamique ed){
+        if (portes[0].intersects(ed)){
+            directionSortie=-1;
+        }
+        else if (portes[1].intersects(ed)){
+            directionSortie=1;
+        }
+
+    }
+    public int getDirectionSortie(){
+
+        if (directionSortie==1){
+            directionSortie=0;
+            return(1);
+        }
+        else if (directionSortie==-1){
+            directionSortie=0;
+            return(-1);
+        }
+        else {
+            return(0);
+        }
     }
 
 

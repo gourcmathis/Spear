@@ -185,7 +185,7 @@ public class FenetreDeJeu {
 
 
 
-				m.changementSalle(m.getSalleCourante().getchange(),canvas);
+				m.changementSalle(m.getSalleCourante().getDirectionSortie());
 
 				personnage.render(gc);
 

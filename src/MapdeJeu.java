@@ -55,12 +55,29 @@ public class MapdeJeu {
         salleCourante.renderCle(gc);
         salleCourante.renderCoffre(gc);
     }
-    public void changementSalle(boolean changement, Canvas canvas){
-        if (changement){
+    public void changementSalle(int changement){
+
+        if (changement ==1){
             indiceCourant=(indiceCourant+1)%5;
             salleCourante=listeSalles.get(indiceCourant);
             teleport(salleCourante.getEntreex(),salleCourante.getEntreey());
+            System.out.println("indice :"+indiceCourant);
+            System.out.println("direction:"+changement);
         }
+        else if (changement==-1){
+            if (indiceCourant==0){
+                indiceCourant=4;
+            }
+            else {
+                indiceCourant--;
+            }
+
+            salleCourante=listeSalles.get(indiceCourant);
+            teleport(salleCourante.getSortiex(),salleCourante.getSortiey());
+            System.out.println("indice :"+indiceCourant);
+            System.out.println("direction:"+changement);
+        }
+
     }
 
 

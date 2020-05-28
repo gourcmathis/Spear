@@ -9,4 +9,8 @@ public class Porte extends Entite{
             ouverte=true;
         }
     }
+    public void setpos(int x,int y){
+        this.posX = x;
+        this.posY = y;
+    }
 }
