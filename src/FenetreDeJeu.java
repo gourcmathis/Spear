@@ -126,6 +126,7 @@ public class FenetreDeJeu {
 	                    cursorY=e.getY();
 	                    if(pause==false) {
 	                    	personnage.shoot((int)cursorX,(int)cursorY,m.getSalleCourante());
+	                    	
 	                    }
 
 	                });
