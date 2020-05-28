@@ -73,50 +73,72 @@ public abstract class Salle {
         return(changeSalle);
      }
 
+    //ajoute un projectile
     public void addProjectile(Projectile p){
         projectiles.add(p);
     }
-
+    //retire un projectile
     public void removeProjectile(Projectile p){
         projectiles.remove(p);
     }
-
+    
+    //ramasse une fleche
     public void pickupArrow(Personnage personnage){
         Iterator<Projectile> i= projectiles.iterator();
+        //si il reste des projectiles dans la salle
         if (!(projectiles.isEmpty())){
+        	//tant qu'il en reste un
             while(i.hasNext()) {
+            	//on passe au prochain
                 Projectile p = i.next();
+                //si p est une fleche
                 if (p instanceof Fleche) {
                     Fleche fleche = (Fleche) p;
+                    //si la fleche est immobile
                     if (!(fleche.isMoving())) {
+                    	//si la fleche est en contact avec les personnage
                         if (fleche.intersects(personnage)) {
+                        	//ajoute une fleche au personnage
                             personnage.addFleche(fleche);
+                            //retire la fleche de la salle
                             i.remove();
-                            String filepath = "assets/pickupFleche.wav";
+                            //fait un bruit
+                           /* String filepath = "assets/pickupFleche.wav";
                			    Audio musicObject = new Audio();
-               			    musicObject.playArrow(filepath);
+               			    musicObject.playArrow(filepath);*/
                         }
                     }
                 }
             }
             }
         }
+    
+    //ajouter une piece d'argent
     public void addArgent(Item i) {
     	money.add(i);
     }
     
+    //ramasser une piece
     public void pickupMoney(Personnage personnage) {
     	Iterator<Item> i= money.iterator();
+    	//s'il reste des pieces dans la salle
     	if (!(money.isEmpty())) {
+    	//tant qu'il y a une autre piece
     	 while(i.hasNext()) {
+    		 //on passe au prochain
              Item p = i.next();
+             //si p est une piece
              if (p instanceof Argent) {
-                 Argent argent = (Argent) p;   
+                 Argent argent = (Argent) p;
+                 //si le personnage est en contact avec la piece
                  if (argent.intersects(personnage)) {
+                	 //on ajoute une piece au personnage
                       personnage.addArgent(argent);
-                      String filepath = "assets/argent.wav";
+                      //on fait un bruit
+                     /* String filepath = "assets/argent.wav";
           			  Audio musicObject = new Audio();
-          			  musicObject.playSong(filepath);
+          			  musicObject.playSong(filepath);*/
+          			  //on retire la piece de la salle
                       i.remove();
                      
                  }
@@ -126,26 +148,36 @@ public abstract class Salle {
          
      }
     
+    //ajoute un coffre
     public void addCoffre(Item i) {
     	coffres.add(i);
     }
     
-    
+    //ouvrir un coffre
     public void pickupCoffre(Personnage personnage) {
     	Iterator<Item> i= coffres.iterator();
+    	//tant qu'il en reste un
     	 while(i.hasNext()) {
+    		 //on passe au prochain
              Item p = i.next();
+             //si p est un coffre
              if (p instanceof Coffre) {
-                 Coffre coffre = (Coffre) p;   
+                 Coffre coffre = (Coffre) p;  
+                 //si le personnage est sur un coffre et qu'il a au moins une cle
                  if (coffre.intersects(personnage) & personnage.getNbCle()>=1) {  
+                	//on retire la cle au personnage
 					personnage.removeCle();
-					String filepath = "assets/coffre.wav";
+					//on fait un bruit
+					/*String filepath = "assets/coffre.wav";
 					Audio musicObject = new Audio();
-					musicObject.playSong(filepath);
+					musicObject.playSong(filepath);*/
+					//on retire le coffre de la salle
                       i.remove();
+                      //on prend un nombre au hasard entre 5 et 10
                       Random r = new Random();
 					  int n = r.nextInt(5);
 					  n+=5;
+					  //on fait apparaitre autant de pieces que le nombre tire
 					  for (int y=0; y<n; y++) {
 						  Argent argent = new Argent(p.posX,p.posY,"file:assets/Argent.png",40);
   						  addArgent(argent);
@@ -155,22 +187,32 @@ public abstract class Salle {
          }
      }
     
+    //ajoute une cle
     public void addCle(Item i) {
     	cles.add(i);
     }
     
+    //ramasse un cle
     public void pickupCle(Personnage personnage) {
     	Iterator<Item> i= cles.iterator();
+    	//s'il il y a encore des cles dans la salle
     	if (!(cles.isEmpty())) {
+    	//tant qu'il y a encore une cle
     	 while(i.hasNext()) {
+    		 //on passe a la suivante
              Item p = i.next();
+             //si p est une cle
              if (p instanceof Cle) {
-                 Cle cle = (Cle) p;   
+                 Cle cle = (Cle) p;  
+                 //si le personnage passe dessus
                  if (cle.intersects(personnage)) {
-                	  String filepath = "assets/cle.wav";
+                	 //on fait un bruit
+                	 /* String filepath = "assets/cle.wav";
          			  Audio musicObject = new Audio();
-         			  musicObject.playSong(filepath);
+         			  musicObject.playSong(filepath);*/
+         			  //on ajoute une cle au personnage
                       personnage.addCle(cle);
+                      //on la retire de la salle
                       i.remove();
                      
                  }
@@ -179,22 +221,30 @@ public abstract class Salle {
     	}
          
      }
-    
+    //ajoute une potion
     public void addPotion(Item i) {
     	potions.add(i);
     }
     
+    //ramasse une potion
     public void pickupPotion(Personnage personnage) {
     	Iterator<Item> i= potions.iterator();
+    	//tant qu'il y a encore une potion
     	 while(i.hasNext()) {
+    		 //on passe a la prochaine
              Item p = i.next();
+             //si p est une potion
              if (p instanceof Potion) {
-                 Potion potion = (Potion) p;   
+                 Potion potion = (Potion) p;  
+                 //si le personnage est sur une potion et qu'il a moins de 3 pv
                  if (potion.intersects(personnage) & personnage.pV<3) {
-                	 String filepath = "assets/potion.wav";
+                	 //on fait un bruit
+                	/* String filepath = "assets/potion.wav";
          			 Audio musicObject = new Audio();
-         			 musicObject.playSong(filepath);
+         			 musicObject.playSong(filepath);*/
+         			 //on ajoute un pv au personnage
                       personnage.pV++;
+                      //on retire la potion de la salle
                       i.remove();
                      
                  }
@@ -202,39 +252,57 @@ public abstract class Salle {
          }
      }
     
+    //ajoute un ennemi
     public void addEnnemi(EntiteVivante e) {
     	ennemis.add(e);
     }
     
-    
+    //un ennemi prend des degats
     public void ennemiesTakingDammage() {
+    	//si il reste des projectiles
     	if (!(projectiles.isEmpty())) {
     	Iterator<EntiteVivante> i;
+    	//pour chaque projectile
     	for (Projectile p : projectiles){
+    		//s'il est en mouvement
     		if (p.isMoving()){
     	    i=ennemis.iterator();
+    	    //s'il reste des ennemis
     		if (!(ennemis.isEmpty())) {
+    		//tant qu'il y en a un autre
     		while(i.hasNext()) {
+    			//on passe au prochain
     			EntiteVivante e = i.next();
+    			//si p est une fleche
     			if (p instanceof Fleche) {
                     Fleche fleche = (Fleche) p;
+                    //si la fleche touche un ennemi
                     if (fleche.intersects(e)) {
+                    	//l'ennemi perd un pv (pour le moment les ennemis meurent en une fois)
                         e.losepV();
+                        //si ses pv tombent à 0
                         if (e.getpV() == 0) {
+                        	//on le retire de la salle
                             i.remove();
-                            String filepath = "assets/ennemiMort.wav";
+                            //on fait un bruit 
+                           /* String filepath = "assets/ennemiMort.wav";
                 			Audio musicObject = new Audio();
-                			musicObject.playSong(filepath);
+                			musicObject.playSong(filepath);*/
+                			//on fait apparaitre une piece
                             Argent argent = new Argent(e.lastposX, e.lastposY, "file:assets/Argent.png", 40);
                             addArgent(argent);
+                            //on tire un chiffre entre 0 et 3
                             Random r = new Random();
                             int n = r.nextInt(3);
+                            //si ce nombre tombe sur 0, on fait apparaitre une potion
                             if (n == 0) {
                                 Potion potion = new Potion(e.lastposX, e.lastposY, "file:assets/Potion.png", 30);
                                 addPotion(potion);
                             }
+                            //on retire un nombre, entre 0 et 5
                             Random a = new Random();
                             int m = a.nextInt(5);
+                            //si on tombe sur 0, une cle apparait
                             if (m == 0) {
                                 Cle cle = new Cle(e.lastposX, e.lastposY, "file:assets/Cle.png", 56);
                                 addCle(cle);
@@ -250,19 +318,25 @@ public abstract class Salle {
     }
 
 
-
+    //joueur prend des degats
     public void JoueurTakingDammage(Personnage personnage) {
 
     	Iterator<EntiteVivante> i;
     	i=ennemis.iterator();
+    	//si il reste des ennemis
 		if (!(ennemis.isEmpty())) {
+			//tant qu'il en reste un
 			while(i.hasNext()) {
+				//on passe au prochain
 				EntiteVivante e = i.next();
+				//si le personnage touche un ennemi
 				if (personnage.intersects(e)) {
+					//le personnage perd un pv
 					personnage.losepV();
-					String filepath = "assets/degatJoueur.wav";
+					//on fait un bruit
+				/*	String filepath = "assets/degatJoueur.wav";
 					Audio musicObject = new Audio();
-					musicObject.playSong(filepath);
+					musicObject.playSong(filepath);*/
 					//rebond de l'ennemi sur le joueur
 					e.setDx(-15);
 					e.setDy(-15);
@@ -285,7 +359,7 @@ public abstract class Salle {
 }
 
 
-
+    // si il reste des projectiles, les met à jour 
     public void updateProjectiles(){
         if (!(projectiles.isEmpty())){
         	for (Projectile p:projectiles) {
@@ -293,7 +367,8 @@ public abstract class Salle {
         	}
         }
     }
-
+    
+    // s'il en reste, affiche les projectiles
     public void renderProjectiles(GraphicsContext gc){
         if (!(projectiles.isEmpty())) {
             for (Projectile p : projectiles) {
@@ -302,6 +377,7 @@ public abstract class Salle {
         }
     }
     
+ // s'il en reste, affiche les ennemis
     public void renderEnnemis(GraphicsContext gc){
         if (!(ennemis.isEmpty())) {
             for (EntiteVivante e : ennemis) {
@@ -309,6 +385,8 @@ public abstract class Salle {
             }
         }
     }
+    
+ // s'il en reste, affiche les pieces
     public void renderArgent(GraphicsContext gc){
         if (!(money.isEmpty())) {
             for (Item i : money) {
@@ -317,6 +395,7 @@ public abstract class Salle {
         }
     }
     
+ // s'il en reste, affiche les potions
     public void renderPotion(GraphicsContext gc){
         if (!(potions.isEmpty())) {
             for (Item i : potions) {
@@ -325,6 +404,7 @@ public abstract class Salle {
         }
     }
     
+ // s'il en reste, affiche les coffres
     public void renderCoffre(GraphicsContext gc){
         if (!(coffres.isEmpty())) {
             for (Item i : coffres) {
@@ -333,6 +413,7 @@ public abstract class Salle {
         }
     }
     
+ // s'il en reste, affiche les cles
     public void renderCle(GraphicsContext gc){
         if (!(cles.isEmpty())) {
             for (Item i : cles) {
@@ -341,6 +422,7 @@ public abstract class Salle {
         }
     }
 
+    //s'il en reste, met à jour les ennemis
     public void updateEnnemis(Personnage p){
         if (!(ennemis.isEmpty())) {
             int px=getPosXSalle(p.getPosX());

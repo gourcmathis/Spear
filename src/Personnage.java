@@ -61,9 +61,9 @@ public class Personnage extends EntiteVivante {
             fleche.acquireTarget(x, y);
             fleches.remove(fleche);
             salle.addProjectile(fleche);
-            String filepath = "assets/fleche.wav";
+           /* String filepath = "assets/fleche.wav";
 			Audio musicObject = new Audio();
-			musicObject.playSong(filepath);
+			musicObject.playSong(filepath);*/
         }
     }
 
