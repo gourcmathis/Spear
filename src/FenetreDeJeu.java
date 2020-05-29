@@ -1,10 +1,6 @@
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.test.Ath;
-import com.test.Context;
-import com.test.GameOver;
-import com.test.PauseMenu;
 
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
@@ -80,7 +76,7 @@ public class FenetreDeJeu {
 
 
 
-        //Affichage ecran 
+        //Affichage ecran
 		ath1=new Ath(personnage);
 		ath1.setTranslateX(180);
 		pauseMenu=new PauseMenu();
@@ -163,9 +159,9 @@ public class FenetreDeJeu {
 
 
                 if (acc_time >=10) {
-                //Perte de pv entre un lapse de temps specifique 
+                //Perte de pv entre un lapse de temps specifique
               	  m.setTmp(m.getTmp()+1);
-          
+
 
                     ath1.setfleche(personnage.getNbFleches());
                     ath1.setargent(personnage.getNbArgent());
@@ -202,7 +198,7 @@ public class FenetreDeJeu {
 
 
 
-				m.changementSalle(m.getSalleCourante().getchange(),canvas);
+				m.changementSalle(m.getSalleCourante().getDirectionSortie());
 
 				personnage.render(gc);
 
@@ -248,7 +244,8 @@ public class FenetreDeJeu {
 
    			  });
    ////////////GAMEOVER///////////////////////////////////////////////
-   				/*if (personnage.pV == 0) {
+
+				/*if (personnage.pV == 0) {
    					GameOver gameOver=new GameOver();
    					Stage window = new Stage();
    					stop();

@@ -29,7 +29,10 @@ public abstract class Salle {
     private int nbCoffres;
 
     private boolean changeSalle=false;
-    Porte porte;
+    private int directionSortie=0;
+    private Porte porte;
+    private Porte porte2;
+    private Porte[] portes;
     
     protected int[][] quadrillage;
     protected ArrayList<Projectile> projectiles;
@@ -47,7 +50,7 @@ public abstract class Salle {
     private int sortiey;
 
 
-    public Salle(int casesHauteur,int caseLargeur ) {
+    public Salle(int casesHauteur,int caseLargeur ,int entreex,int entreey, int sortiex, int sortiey) {
         hauteur = casesHauteur;
         largeur = caseLargeur;
         unite = Variables.Hauteur() / casesHauteur;
@@ -56,16 +59,41 @@ public abstract class Salle {
         mur = new Mur(0,0,unite);
         sol = new Sol(0,0,unite);
         porte=new Porte(0,0,unite);
+        porte2=new Porte(0,0,unite);
+
+        portes =new Porte[2];
+        portes[0]=porte;
+        portes[1]=porte2;
+
         projectiles = new ArrayList<>();
         ennemis = new ArrayList<>();
         money = new ArrayList<>();
         potions = new ArrayList<>();
         cles = new ArrayList<>();
         coffres = new ArrayList<>();
+        this.entreex=entreex;
+        this.entreey=entreey;
+        this.sortiex=sortiex;
+        this.sortiey=sortiey;
         }
 
+    public int getEntreey() {
+        return entreey;
+    }
 
-     public boolean getchange(){
+    public int getEntreex() {
+        return entreex;
+    }
+
+    public int getSortiex() {
+        return sortiex;
+    }
+
+    public int getSortiey() {
+        return sortiey;
+    }
+
+    public boolean getchange(){
         if(changeSalle){
             changeSalle = false;
             return(!(changeSalle));
@@ -342,8 +370,8 @@ public abstract class Salle {
 					e.setDy(-5);
 					e.move();
 					appCols(e);
-					personnage.setDx(3);
-					personnage.setDy(3);
+					personnage.setDx(8);
+					personnage.setDy(8);
 					personnage.move();
 					appCols(personnage);
 			
@@ -630,10 +658,8 @@ public abstract class Salle {
             }
             if (ed instanceof Personnage){
             if (quadrillage[voisins[0][i]][voisins[1][i]] == 2){
-                if (checkcollisionCase(ed, voisins[0][i], voisins[1][i])) {
-                changeSalle=true;
-                porte.setouvrir(unite);
-                }
+                checkcollisionPorte(ed);
+
             }
             }
         }
@@ -647,6 +673,41 @@ public abstract class Salle {
     public boolean checkcollisionCase(EntiteDynamique ed,int i, int j){
         mur.setpos(getPosReelY(i),getPosReelX(j));
         return(mur.intersects(ed));
+    }
+    protected void placePorte(){
+        int k=0;
+        for (int i = 0; i <hauteur ; i++) {
+            for (int j = 0; j <largeur ; j++) {
+                if (quadrillage[i][j] == 2) {
+                    portes[k].setpos(getPosReelY(i),getPosReelX(j));
+
+                    k++;
+                }
+            }
+        }
+    }
+    public void checkcollisionPorte(EntiteDynamique ed){
+        if (portes[0].intersects(ed)){
+            directionSortie=-1;
+        }
+        else if (portes[1].intersects(ed)){
+            directionSortie=1;
+        }
+
+    }
+    public int getDirectionSortie(){
+
+        if (directionSortie==1){
+            directionSortie=0;
+            return(1);
+        }
+        else if (directionSortie==-1){
+            directionSortie=0;
+            return(-1);
+        }
+        else {
+            return(0);
+        }
     }
 
 
@@ -689,16 +750,18 @@ public abstract class Salle {
         }
 
         public void dessinerMap(GraphicsContext gc){
-            for (int i = 0; i < hauteur; i++) {
+        int k = 0;
+        for (int i = 0; i < hauteur; i++) {
                 for (int j = 0; j < largeur; j++) {
 
                     if (quadrillage[j][i] == 1) {
                         gc.drawImage(mur.getImage(), j * unite, i * unite);
                     } else if (quadrillage[j][i] == 2) {
-
-                        gc.drawImage(porte.getImage(), j * unite, i * unite);
+                        gc.drawImage(portes[k].getImage(), j * unite, i * unite);
+                        k++;
                     } else if (quadrillage[j][i] == 0) {
                         gc.drawImage(sol.getImage(), j * unite, i * unite);
+
                     }
                 }
             }
