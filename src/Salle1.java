@@ -17,14 +17,14 @@ public class Salle1 extends Salle{
 
 
     public Salle1(int casesHauteur, int caseLargeur) {
-		super(casesHauteur, caseLargeur,Variables.Largeur()/2,Variables.Hauteur()/2,Variables.Largeur()/2,800);
+		super(casesHauteur, caseLargeur,30+Variables.Largeur()/2,800,30+Variables.Largeur()/2,800);
 		creationMatrice();
 		placePorte(true);
 	    addEnnemi(squelette1);
 	    addEnnemi(squelette2);
 	    addEnnemi(araignee1);
 	    addEnnemi(araignee2);
-	
+
 	    addCoffre(coffre1);
 	    addCoffre(coffre2);
 		 
