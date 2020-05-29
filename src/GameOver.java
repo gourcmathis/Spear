@@ -1,3 +1,5 @@
+import com.test.GameMenu;
+
 import javafx.animation.FadeTransition;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -34,7 +36,10 @@ public class GameOver extends Parent {
 
 	
 	public GameOver() {
+		//Box contennat la fenetre gameOver
 			root=new VBox(30);
+			//Menu post defaite
+			GameMenu gameMenu=new GameMenu();
 			mainScene=new Scene(root,1024,1024);
 			mainStage=new Stage();
 			mainStage.setScene(mainScene);
@@ -50,11 +55,19 @@ public class GameOver extends Parent {
   			
   			
 			root.getChildren().addAll(titre);
-			FadeTransition ft=new FadeTransition(Duration.seconds(5),root);
+			FadeTransition ft=new FadeTransition(Duration.seconds(3),root);
 				ft.setFromValue(1);
 				ft.setToValue(0);
 				ft.play();
-				ft.setOnFinished(evt->System.exit(0));
+				//Quand on perd la game over s'affiche puis la fenetre se ferme et un menu principale s'ouvre pour pouvoir rejouer
+				ft.setOnFinished(evt->{ 
+					mainStage.hide();
+					mainStage=gameMenu.getMainStage();
+
+				mainStage.show();
+				
+					
+				});
 	}
 	
 	
