@@ -42,7 +42,7 @@ public class MapdeJeu {
         salleCourante.updateEnnemis(joueur);
 
         //Lapse de temps entre deux perte de Pv
-        if(tmp%25==0) {
+        if(tmp%50==0) {
             salleCourante.JoueurTakingDammage(joueur);
         }
        

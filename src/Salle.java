@@ -370,8 +370,8 @@ public abstract class Salle {
 					e.setDy(-5);
 					e.move();
 					appCols(e);
-					personnage.setDx(3);
-					personnage.setDy(3);
+					personnage.setDx(8);
+					personnage.setDy(8);
 					personnage.move();
 					appCols(personnage);
 			

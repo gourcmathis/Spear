@@ -244,7 +244,8 @@ public class FenetreDeJeu {
 
    			  });
    ////////////GAMEOVER///////////////////////////////////////////////
-   				/*if (personnage.pV == 0) {
+
+				/*if (personnage.pV == 0) {
    					GameOver gameOver=new GameOver();
    					Stage window = new Stage();
    					stop();

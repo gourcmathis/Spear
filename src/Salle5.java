@@ -22,7 +22,7 @@ public class Salle5 extends Salle{
 
     
     public Salle5(int casesHauteur, int caseLargeur) {
-		super(casesHauteur, caseLargeur,540,540,128,128);
+		super(casesHauteur, caseLargeur,540,540,160,800);
 		creationMatrice();
 		placePorte();
 		 addEnnemi(squelette1);

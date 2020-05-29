@@ -17,7 +17,7 @@ public class Salle3 extends Salle{
     Cle cle = new Cle(200,800,"file:assets/Cle.png",56);
 
     public Salle3(int casesHauteur, int caseLargeur) {
-		super(casesHauteur, caseLargeur,540,136,128,128);
+		super(casesHauteur, caseLargeur,540,136,128,450);
 		creationMatrice();
 		placePorte();
 	    addEnnemi(squelette1);
