@@ -24,8 +24,8 @@ public abstract class EntiteDynamique extends Entite {
     public void moveTo(int x, int y){
         int distanceX = (x-posX);
         int distanceY = (y-posY);
-        int speedX=distanceX/20;
-        int speedY=distanceY/20;
+        int speedX=distanceX/50;
+        int speedY=distanceY/50;
 
         setDx(speedX);
         setDy(speedY);

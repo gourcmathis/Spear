@@ -674,8 +674,11 @@ public abstract class Salle {
         mur.setpos(getPosReelY(i),getPosReelX(j));
         return(mur.intersects(ed));
     }
-    protected void placePorte(){
-        int k=0;
+    protected void placePorte(boolean inverse){
+        int k;
+
+        if (inverse){
+            k=0;
         for (int i = 0; i <hauteur ; i++) {
             for (int j = 0; j <largeur ; j++) {
                 if (quadrillage[i][j] == 2) {
@@ -685,7 +688,23 @@ public abstract class Salle {
                 }
             }
         }
+        }
+        else {
+            k=1;
+            for (int i = 0; i <hauteur ; i++) {
+                for (int j = 0; j <largeur ; j++) {
+                    if (quadrillage[i][j] == 2) {
+                        portes[k].setpos(getPosReelY(i),getPosReelX(j));
+
+                        k--;
+                    }
+                }
+            }
+
+        }
     }
+
+
     public void checkcollisionPorte(EntiteDynamique ed){
         if (portes[0].intersects(ed)){
             directionSortie=-1;
