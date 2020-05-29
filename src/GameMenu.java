@@ -52,6 +52,7 @@ public class GameMenu extends Parent {
   			titre.setFill(Color.WHITE);
   			titre.setTranslateX(380);
   			titre.setTranslateY(150);
+  			
   			/////////////////////////////////CREDIT///////////////////////
 			Rectangle credit=new Rectangle(700,600);
 			credit.setFill(Color.WHITE);

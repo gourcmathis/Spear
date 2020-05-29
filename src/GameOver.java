@@ -64,6 +64,7 @@ public class GameOver extends Parent {
 					mainStage.hide();
 					mainStage=gameMenu.getMainStage();
 
+					
 				mainStage.show();
 				
 					
