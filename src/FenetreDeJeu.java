@@ -235,12 +235,21 @@ public class FenetreDeJeu {
     				
     			});
                context.getBtnExit().setOnMouseClicked(event->{
+            	   FadeTransition ft=new FadeTransition(Duration.seconds(0.4),gamePane);
+     				ft.setFromValue(1);
+     				ft.setToValue(1);
+     				ft.setOnFinished(evt->{
      					start();
+     					pause=false;
      					ath1.setVisible(true);
      					context.setVisible(false);
-     					pause=false;
-     	
      					text.setVisible(true);
+     					
+     				});
+      				
+      				ft.play();
+
+     					
 
    			  });
    ////////////GAMEOVER///////////////////////////////////////////////
