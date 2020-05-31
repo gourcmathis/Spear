@@ -2,8 +2,6 @@
 
 
 public class Salle4 extends Salle{
-	private int nbEnnemis;
-    private int nbCoffres;
     Squelette squelette = new Squelette(100,100,4,"file:assets/Squelette.png",56);
     Squelette squelette1 = new Squelette(500,200,4,"file:assets/Squelette.png",56);
     Squelette squelette2 = new Squelette(100,800,4,"file:assets/Squelette.png",56);

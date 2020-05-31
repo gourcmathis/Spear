@@ -1,22 +1,9 @@
-
-
-
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-
-import javafx.scene.shape.Rectangle;
-
-
-
 
 
 public abstract class Salle {
@@ -25,29 +12,23 @@ public abstract class Salle {
     protected int unite;
     Mur mur;
     Sol sol;
-    private int nbEnnemis;
-    private int nbCoffres;
-
-    private boolean changeSalle=false;
     private int directionSortie=0;
-    private Porte porte;
-    private Porte porte2;
+    private Porte porte; // porte d'entree
+    private Porte porte2; // porte de sortie
     private Porte[] portes;
-    
     protected int[][] quadrillage;
     protected ArrayList<Projectile> projectiles;
     protected ArrayList<EntiteVivante> ennemis;
-
-    protected List<AStarCell> totalPath = new ArrayList<>(200);
-    protected AStarGrid<Integer> pathfindinggrid;
+    protected List<AStarCell> totalPath = new ArrayList<>(200); // Algo A* non utilisé
+    protected AStarGrid<Integer> pathfindinggrid; // Algo A* non utilisé
     protected ArrayList<Item> money;
     protected ArrayList<Item> potions;
     protected ArrayList<Item> cles;
     protected ArrayList<Item> coffres;
-    private int entreex;
-    private int entreey;
-    private int sortiex;
-    private int sortiey;
+    private int entreex; // abscisse de l'entree de la salle
+    private int entreey; // ordonnée de l'entree de la salle
+    private int sortiex;// abscisse de la sortie de la salle
+    private int sortiey; // ordonnée de la sortie de la salle
 
 
     public Salle(int casesHauteur,int caseLargeur ,int entreex,int entreey, int sortiex, int sortiey) {
@@ -93,22 +74,12 @@ public abstract class Salle {
         return sortiey;
     }
 
-    public boolean getchange(){
-        if(changeSalle){
-            changeSalle = false;
-            return(!(changeSalle));
-        }
-        return(changeSalle);
-     }
 
     //ajoute un projectile
     public void addProjectile(Projectile p){
         projectiles.add(p);
     }
-    //retire un projectile
-    public void removeProjectile(Projectile p){
-        projectiles.remove(p);
-    }
+
     
     //ramasse une fleche
     public void pickupArrow(Personnage personnage){
@@ -265,13 +236,13 @@ public abstract class Salle {
              if (p instanceof Potion) {
                  Potion potion = (Potion) p;  
                  //si le personnage est sur une potion et qu'il a moins de 5 pv
-                 if (potion.intersects(personnage) & personnage.pV<5) {
+                 if (potion.intersects(personnage) & personnage.getpV()<5) {
                 	 //on fait un bruit
                 	/* String filepath = "assets/potion.wav";
          			 Audio musicObject = new Audio();
          			 musicObject.playSong(filepath);*/
-         			 //on ajoute un pv au personnage
-                      personnage.pV++;
+         			 //on ajoute un pv au pedrsonnage
+                      personnage.gainpV();
                       //on retire la potion de la salle
                       i.remove();
                      
@@ -772,7 +743,6 @@ public abstract class Salle {
         int k = 0;
         for (int i = 0; i < hauteur; i++) {
                 for (int j = 0; j < largeur; j++) {
-
                     if (quadrillage[j][i] == 1) {
                         gc.drawImage(mur.getImage(), j * unite, i * unite);
                     } else if (quadrillage[j][i] == 2) {

@@ -1,3 +1,7 @@
+/* !IMPORTANT ! Ces classes nous n'avons pas construites ces classes. Nous voulions illustrer l'utilisation de l'algorithme A* pour les ennemis mais nous n'avons pas réussi à faire marcher l'implémentation */
+
+
+
 
 
 /**

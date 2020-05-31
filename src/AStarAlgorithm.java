@@ -1,4 +1,15 @@
 
+/* !IMPORTANT ! Nous n'avons pas construites ces classes. Nous voulions illustrer l'utilisation de l'algorithme A* pour les ennemis mais nous n'avons pas réussi à faire marcher l'implémentation */
+
+
+
+
+
+
+
+
+
+
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -6,6 +17,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
+
+
+
 
 /**
  * This is a 1:1 translation of the algorithm on wikipedia: http://en.wikipedia.org/wiki/A*_search_algorithm

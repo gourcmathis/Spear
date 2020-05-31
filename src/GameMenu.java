@@ -1,12 +1,7 @@
 import javafx.animation.FadeTransition;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundImage;
 import javafx.scene.layout.BackgroundPosition;
@@ -23,15 +18,10 @@ import javafx.util.Duration;
 
 public class GameMenu extends Parent {
 	private GameMenu gameMenu;
-
-	
-	
 	private static VBox root;
 	private  Scene mainScene;
 	private Stage mainStage;
-	
 
-	
 	public GameMenu() {
 			//Box elements verticale
 			root=new VBox(30);

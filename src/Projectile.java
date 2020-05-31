@@ -3,10 +3,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 
 public abstract class Projectile extends EntiteDynamique {
-    protected int targetX;
-    protected int targetY;
-    private double theta=0;
-    ImageView iv ;
+    protected int targetX; // abscisse de la cible
+    protected int targetY; // ordonnée de la cible
+    private double theta=0; // rotation de l'image du projectile
+    private ImageView iv ; // imageview permettant de faire des transformations sur l'image
     public Projectile(int x, int y, String nomFichier,int pixelImage) {
         super(x, y, nomFichier,pixelImage);
         iv = new ImageView(image);
@@ -37,24 +37,26 @@ public abstract class Projectile extends EntiteDynamique {
    }
 
 
-
-        private void calculAngle(int x, int y){
-            if (x!=0) {
-                resetrotation();
-                theta = 180+ Math.toDegrees(-Math.atan2(x,y));
-            }
+    /*Fonction permettant de calculer l'angle selon la direction de la cible*/
+    private void calculAngle(int x, int y){
+        if (x!=0) {
+            resetrotation();
+            theta = 180+ Math.toDegrees(-Math.atan2(x,y));
         }
-        public void resetrotation(){
-            theta=-theta;
-            rotateImage();
-        }
-
-        public void rotateImage(){
-            iv.setRotate(theta);
-            SnapshotParameters params = new SnapshotParameters();
-            params.setFill(Color.TRANSPARENT);
-            setImage(iv.snapshot(params, null));
-        }
+    }
 
 
+    /*Réinitialisation de la rotation de l'image*/
+    public void resetrotation(){
+        theta=-theta;
+        rotateImage();
+    }
+
+    /*Application de la rotation de l'image grace à une imageview*/
+    private void rotateImage(){
+        iv.setRotate(theta);
+        SnapshotParameters params = new SnapshotParameters();
+        params.setFill(Color.TRANSPARENT);
+        setImage(iv.snapshot(params, null));
+    }
 }

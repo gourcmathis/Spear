@@ -1,22 +1,13 @@
 import java.util.ArrayList;
-import java.util.Random;
-
-
 import javafx.animation.AnimationTimer;
 import javafx.animation.FadeTransition;
-import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -41,38 +32,31 @@ public class FenetreDeJeu {
 	private PauseMenu pauseMenu;
 	private Context context;
 
-
 	
 	public FenetreDeJeu() {
-		
 		initializeStage();
-
-
-
 	}
 	
 
 	private void initializeStage() {
-	
 		gamePane=new AnchorPane();
 		gameScene=new Scene(gamePane,1024,1024);
 		gameStage=new Stage();
 		gameStage.setScene(gameScene);
 		canvas = new Canvas(1024,1024);
+        GraphicsContext gc = canvas.getGraphicsContext2D(); // Contexte graphique permettant de dessiner le jeu
 
 
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        Personnage personnage = new Personnage(largeur/2,hauteur/2,72);
+		/*Initialisation des objets et salles*/
+		Personnage personnage = new Personnage(largeur/2,hauteur/2,72); // initialisation du personnage
+        MapdeJeu m = new MapdeJeu(16,16,personnage); // initialisation de toutes les salles du donjon
 
 
-
-
-        Image image = new Image("file:assets/crosshair.png");
-
-        MapdeJeu m = new MapdeJeu(16,16,personnage);
-
-
-
+		/*Curseur en jeu*/
+		Image image = new Image("file:assets/crosshair.png"); //Image du curseur
+		gameScene.setCursor(new ImageCursor(image,
+				image.getWidth() / 2,
+				image.getHeight() /2));
 
 
 
@@ -97,53 +81,48 @@ public class FenetreDeJeu {
 		ath1.setVisible(false);
 		text.setVisible(false);
 
-
+		/*Ath bas de l'écran*/
 		gameStage.setTitle("Spear");
 		gamePane.getChildren().addAll(canvas,ath1,pauseMenu,text,titre,context);
 		gameStage.setResizable(false);
 
 
 
-        gameScene.setCursor(new ImageCursor(image,
-                image.getWidth() / 2,
-                image.getHeight() /2));
 
-		   //INPUTS
+
+		//INPUTS
         ArrayList<String> input = new ArrayList<>();
+			//TOUCHE ENFONCEE
+			gameScene.setOnKeyPressed(e -> {
+				String code = e.getCode().toString();
+				if ( !input.contains(code) )
+					input.add( code );
+			});
 
-        //TOUCHE ENFONCEE
-        gameScene.setOnKeyPressed(e -> {
-            String code = e.getCode().toString();
-            if ( !input.contains(code) )
-                input.add( code );
-        });
-
-        //TOUCHE RELACHEE
-        gameScene.setOnKeyReleased(e -> {
-            String code = e.getCode().toString();
-            input.remove(code);
-        });
-
-
-      
-	        gameScene.setOnMouseClicked(
-	                e -> {
-	                    cursorX=e.getX();
-	                    cursorY=e.getY();
-	                    if(pause==false) {
-	                    	personnage.shoot((int)cursorX,(int)cursorY,m.getSalleCourante());
-	                    	
-	                    }
-
-	                });
+			//TOUCHE RELACHEE
+			gameScene.setOnKeyReleased(e -> {
+				String code = e.getCode().toString();
+				input.remove(code);
+			});
 
 
+		  	/*Clic de la souris*/
+			gameScene.setOnMouseClicked(
+					e -> {
+						cursorX=e.getX();
+						cursorY=e.getY();
+						if(pause==false) {
+							personnage.shoot((int)cursorX,(int)cursorY,m.getSalleCourante()); // permet de tirer des fleches
+
+						}
+					});
+
+		/*Initialisation des variables de temps*/
         last_time = 0;
         acc_time =0;
         
 
-
-        
+        /*Boucle de jeu*/
         new AnimationTimer() {
             public void handle(long currentNanoTime)
             {
@@ -162,45 +141,44 @@ public class FenetreDeJeu {
                 //Perte de pv entre un lapse de temps specifique
               	  m.setTmp(m.getTmp()+1);
 
-
+              	  	/*Liaison de l'ath aux informations du joueur*/
                     ath1.setfleche(personnage.getNbFleches());
                     ath1.setargent(personnage.getNbArgent());
                     ath1.setpv(personnage.getpV());
                     ath1.setcle(personnage.getNbCle());
-                    //System.out.println(salle.getPosXSalle(personnage.getPosX()));
+
+                    /*réinitialisation de la vitesse du joueur*/
                     personnage.setDx(0);
                     personnage.setDy(0);
 
 
 
                     if (input.contains("Q")){
-                        personnage.setDx(-4);
+                        personnage.setDx(-4);//déplacement gauche
                     }
                     if (input.contains("D")){
-                        personnage.setDx(4);
+                        personnage.setDx(4); // déplacement droit
                     }
                     if (input.contains("Z")){
-                        personnage.setDy(-4);
+                        personnage.setDy(-4); //déplacement haut
                    
                     }
-                    if (input.contains("S")) {
+                    if (input.contains("S")) { //déplacement bas
                         personnage.setDy(4);
 
                     }
 
-                    personnage.move();
-					m.updateSalle();
-					m.renderSalle(gc);
-
-                    acc_time = 0;
+                    personnage.move(); // déplacement du personnage
+					m.updateSalle(); // mise à jour et calcul des évènements des salles
+					m.renderSalle(gc); // affichage de la salle
+                    acc_time = 0; // réinitialisation du compteur de temps
                 }
 
 
 
+				m.changementSalle(m.getSalleCourante().getDirectionSortie()); // changement de salle si le joueur passe une porte de la salle
 
-				m.changementSalle(m.getSalleCourante().getDirectionSortie());
-
-				personnage.render(gc);
+				personnage.render(gc); // dessin de l'image du joueur
 
 
 
@@ -215,7 +193,7 @@ public class FenetreDeJeu {
 
       			}
         
-                
+                /*Menu pause*/
                pauseMenu.getBtnJouer().setOnMouseClicked(event->{
       				FadeTransition ft=new FadeTransition(Duration.seconds(0.4),gamePane);
       				ft.setFromValue(1);
@@ -226,14 +204,11 @@ public class FenetreDeJeu {
       					ath1.setVisible(true);
       					pause=false;
     					text.setVisible(true);
-    
-      					
       				});
-      				
       				ft.play();
-
-    				
     			});
+
+
                context.getBtnExit().setOnMouseClicked(event->{
             	   FadeTransition ft=new FadeTransition(Duration.seconds(0.4),gamePane);
      				ft.setFromValue(1);
@@ -246,15 +221,12 @@ public class FenetreDeJeu {
      					text.setVisible(true);
      					
      				});
-      				
       				ft.play();
-
-     					
-
    			  });
+
    ////////////GAMEOVER///////////////////////////////////////////////
 
-				/*if (personnage.pV == 0) {
+				if (personnage.getpV() == 0) {
    					GameOver gameOver=new GameOver();
    					Stage window = new Stage();
    					stop();
@@ -263,9 +235,18 @@ public class FenetreDeJeu {
    					window.show();
    				
 
-   				}*/
+   				}
 
+////////////VICTOIRE///////////////////////////////////////////////
 
+				if (personnage.getNbArgent()>=50) {
+					Victoire victoire = new Victoire();
+					Stage window = new Stage();
+					stop();
+					window = victoire.getMainStage();
+					gameStage.hide();
+					window.show();
+				}
 
 
 
@@ -275,17 +256,12 @@ public class FenetreDeJeu {
 
 
 	}
-	
 
-         
 	
 	public void createNewGame(Stage menuStage) {
 		this.menuStage=menuStage;
 		this.menuStage.hide();
-
 		gameStage.show();
 		
 	}
-	
-
 }

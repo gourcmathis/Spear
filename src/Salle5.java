@@ -1,10 +1,4 @@
-
-
-
-
 public class Salle5 extends Salle{
-	private int nbEnnemis;
-    private int nbCoffres;
     Squelette squelette1 = new Squelette(700,100,4,"file:assets/Squelette.png",56);
     Squelette squelette2 = new Squelette(450,800,4,"file:assets/Squelette.png",56);
     Squelette squelette3= new Squelette(400,280,4,"file:assets/Squelette.png",56);
@@ -33,15 +27,9 @@ public class Salle5 extends Salle{
 		 addEnnemi(araignee2);
 		 addEnnemi(araignee3);
 		 addEnnemi(araignee4);
-		 
 	     addArgent(argent);
 	     addPotion(potion);
 	     addCle(cle);
-	    
-
-
-	     
-
 	}
 
 
@@ -73,11 +61,7 @@ public class Salle5 extends Salle{
         	quadrillage[i][3]=1;
         	
         }
-      
 
-     
-        
-       
         //Porte1
         quadrillage[3][14]=1;
         quadrillage[4][14]=2;
@@ -86,15 +70,5 @@ public class Salle5 extends Salle{
         quadrillage[6][7]=1;
         quadrillage[7][7]=2;
         quadrillage[8][7]=1;
-        
-   
-       
-   
-        
     }
-    
-
-
-
-
 }

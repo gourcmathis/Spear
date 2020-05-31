@@ -1,10 +1,5 @@
-
-
-
-
 import javafx.animation.FadeTransition;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -119,12 +114,6 @@ public class PauseMenu extends Parent{
   				bouton.setFill(Color.BLACK);
   				text.setFill(Color.WHITE);
   			});
-  			
   		}
 	}
-
-
-
-	
-
 }
